@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>EROVIBE | Event Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d0d1a;
+            --bg-secondary: #12121e;
+            --bg-card: #1a1a2e;
+            --accent: #e91e63;
+            --accent-hover: #f50057;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --text-muted: #666;
+            --border: #2a2a3e;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: #1a1a2e; height: 50px;
+            display: flex; align-items: center; padding: 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-logo {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 18px; font-weight: 900; color: var(--accent);
+            flex-shrink: 0; margin-right: auto;
+        }
+        .header-logo img { height: 28px; border-radius: 4px; }
+        .header-nav {
+            display: flex; gap: 24px; list-style: none;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+        .header-nav a {
+            color: var(--text-secondary); font-size: 13px; font-weight: 500;
+            transition: color 0.2s; white-space: nowrap;
+        }
+        .header-nav a:hover, .header-nav a.active { color: #fff; }
+        .header-right {
+            display: flex; align-items: center; gap: 12px;
+            margin-left: auto; flex-shrink: 0;
+        }
+        .header-icon {
+            width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); cursor: pointer; font-size: 16px;
+            border-radius: 4px; transition: color 0.2s;
+        }
+        .header-icon:hover { color: #fff; }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 18px; height: 2px; background: var(--text-secondary); border-radius: 1px; }
+        .hamburger:hover span { background: #fff; }
+
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 20px; max-width: 1280px; margin: 0 auto;
+        }
+        .footer-top {
+            display: flex; align-items: center; gap: 20px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .footer-logo { font-size: 18px; font-weight: 900; color: var(--accent); }
+        .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-lang {
+            margin-left: auto; padding: 4px 10px; border-radius: 4px;
+            border: 1px solid var(--border); background: none;
+            color: var(--text-secondary); font-size: 12px; cursor: pointer;
+        }
+        .footer-disclaimer { font-size: 11px; color: var(--text-muted); line-height: 1.5; max-width: 800px; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        .page-content {
+            max-width: 1280px; margin: 70px auto 0; padding: 20px;
+        }
+        .breadcrumb {
+            font-size: 12px; color: var(--text-secondary); margin-bottom: 20px;
+        }
+        .breadcrumb a { color: var(--text-secondary); transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--accent); }
+        .breadcrumb span { color: var(--text-muted); margin: 0 6px; }
+
+        .event-banner {
+            width: 100%; aspect-ratio: 16/7; border-radius: 12px;
+            overflow: hidden; margin-bottom: 24px; background: var(--bg-card);
+        }
+        .event-banner img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+
+        .event-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+        .event-tag-badge {
+            padding: 4px 14px; border-radius: 20px; font-size: 12px;
+            font-weight: 700; color: #fff;
+        }
+        .event-title-text {
+            font-size: 28px; font-weight: 900;
+        }
+
+        .timer-block {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 20px; margin-bottom: 24px;
+            display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+        }
+        .timer-label { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
+        .timer-digits {
+            display: flex; gap: 8px;
+        }
+        .timer-unit {
+            background: var(--bg-secondary); padding: 10px 14px; border-radius: 8px;
+            text-align: center; min-width: 56px;
+        }
+        .timer-num { font-size: 24px; font-weight: 900; color: #ff9100; }
+        .timer-lbl { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+        .event-description {
+            font-size: 14px; color: var(--text-secondary); line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        .event-description p { margin-bottom: 14px; }
+
+        .rewards-section {
+            margin-bottom: 32px;
+        }
+        .section-title {
+            font-size: 18px; font-weight: 800; margin-bottom: 14px;
+            padding-bottom: 8px; border-bottom: 1px solid var(--border);
+        }
+        .rewards-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+        }
+        .reward-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 8px; padding: 16px; text-align: center;
+        }
+        .reward-icon {
+            width: 56px; height: 56px; border-radius: 12px; margin: 0 auto 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: 700; color: #fff;
+        }
+        .reward-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+        .reward-desc { font-size: 11px; color: var(--text-secondary); }
+
+        .download-btn {
+            padding: 14px 40px; border-radius: 8px; border: none;
+            background: var(--accent); color: #fff;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .download-btn:hover { background: var(--accent-hover); transform: scale(1.02); }
+
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .event-title-text { font-size: 22px; }
+            .timer-digits { flex-wrap: wrap; }
+            .rewards-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .header { padding: 0 12px; }
+            .header-logo { font-size: 16px; }
+            .page-content { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html" class="header-logo">
+        
+        EROVIBE
+    </a>
+    <nav>
+        <ul class="header-nav">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="news_list.html">News</a></li>
+            <li><a href="events.html" class="active">Limited-time Events</a></li>
+            <li><a href="forum_list.html">Forum</a></li>
+        </ul>
+    </nav>
+    <div class="header-right">
+        <div class="header-icon" title="Language">🌐</div>
+        <div class="hamburger" onclick="alert('Coming soon!')">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
+
+<div class="page-content" id="pageContent"></div>
+
+<footer class="footer">
+    <div class="footer-top">
+        <div class="footer-logo">EROVIBE</div>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Support</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Advertise</a>
+            <a href="forum_list.html">Forum</a>
+        </div>
+        <select class="footer-lang" onchange="alert('Coming soon!')">
+            <option>English</option>
+            <option>日本語</option>
+            <option>中文</option>
+            <option>한국어</option>
+        </select>
+    </div>
+    <p class="footer-disclaimer">
+        © 2026 EROVIBE. All rights reserved. All games are property of their respective developers.<br>
+        This website contains age-restricted content. You must be 18+ to access. All characters depicted are 18 years of age or older.
+    </p>
+</footer>
+
+<script>
+const eventsData = [
+    {
+        img: "img/event_1.jpg",
+        tag: "HOT EVENT", tagColor: "#e91e63",
+        title: "Darkness Born from the Light",
+        timer: { days: 6, hours: 14, minutes: 32, seconds: 8 },
+        description: `<p>The forces of light and shadow collide in this epic limited-time event that challenges everything you thought you knew about the game's lore. As darkness spreads across the realm, heroes must make difficult choices that blur the line between good and evil.</p>
+<p>Exclusive story chapters reveal the hidden history of the world's creation, where light itself gave birth to the very darkness that now threatens to consume it. Players will encounter new characters, face moral dilemmas, and unlock branching storylines that lead to different event endings.</p>
+<p>Limited-edition skins transform your favorite characters with stunning dark-light fusion designs. These cosmetics are exclusively available during this event and will not return — collect them before time runs out!</p>
+<p>Log in daily during the event period to claim bonus prizes including premium currency, rare materials, and an exclusive event-themed avatar frame. Complete all event missions to earn the legendary "Eclipse Herald" title and matching profile badge.</p>`,
+        rewards: [
+            { icon: "⚔️", bg: "linear-gradient(135deg,#e91e63,#9c27b0)", name: "Eclipse Blade", desc: "Legendary weapon skin" },
+            { icon: "👗", bg: "linear-gradient(135deg,#7c4dff,#e91e63)", name: "Shadow Light Outfit", desc: "Exclusive character skin" },
+            { icon: "💎", bg: "linear-gradient(135deg,#2196f3,#00bcd4)", name: "1,500 Gems", desc: "Premium currency reward" },
+            { icon: "🏆", bg: "linear-gradient(135deg,#ff9100,#ffeb3b)", name: "Eclipse Herald Title", desc: "Limited profile badge" },
+            { icon: "📜", bg: "linear-gradient(135deg,#795548,#a1887f)", name: "Story Chapters", desc: "3 exclusive story episodes" },
+            { icon: "🎁", bg: "linear-gradient(135deg,#00c853,#69f0ae)", name: "Daily Login Gifts", desc: "14 days of rewards" },
+        ]
+    },
+    {
+        img: "img/event_2.jpg",
+        tag: "NEW EVENT", tagColor: "#00c853",
+        title: "Canvas of Longing",
+        timer: { days: 9, hours: 8, minutes: 12, seconds: 55 },
+        description: `<p>"Canvas of Longing" is a deeply emotional event that explores the artistic side of desire and creativity. Set in a magical art gallery that exists between dimensions, players must restore fading masterpieces by reliving the stories they depict.</p>
+<p>Each painting tells the tale of a different love — passionate, forbidden, unrequited, and eternal. As you restore each canvas, you'll unlock new characters inspired by classical art movements, from Renaissance beauty to surrealist fantasy. These characters bring unique abilities themed around their artistic origins.</p>
+<p>The event introduces a new creative mini-game where players compose their own scenes using in-game assets. The community's best creations will be featured in a special gallery, and top artists will receive exclusive rewards and recognition.</p>
+<p>Explore new story content that delves into the relationship between creation and desire, featuring fully voiced cutscenes and breathtaking visual sequences that push the boundaries of mobile game artistry. This event is a celebration of beauty in all its forms.</p>`,
+        rewards: [
+            { icon: "🎨", bg: "linear-gradient(135deg,#e91e63,#ff5722)", name: "Master Palette", desc: "Exclusive crafting tool" },
+            { icon: "🖼️", bg: "linear-gradient(135deg,#9c27b0,#e040fb)", name: "Gallery Frame", desc: "Profile decoration" },
+            { icon: "✨", bg: "linear-gradient(135deg,#2196f3,#00bcd4)", name: "2,000 Gems", desc: "Premium currency reward" },
+            { icon: "👤", bg: "linear-gradient(135deg,#00c853,#76ff03)", name: "New Character", desc: "Event-exclusive hero" },
+            { icon: "🎵", bg: "linear-gradient(135deg,#ff9100,#ffc107)", name: "Canvas BGM", desc: "Exclusive background music" },
+            { icon: "🎭", bg: "linear-gradient(135deg,#7c4dff,#b388ff)", name: "Art Emotes", desc: "5 animated expressions" },
+        ]
+    },
+    {
+        img: "img/event_3.jpg",
+        tag: "TOURNAMENT", tagColor: "#7c4dff",
+        title: "Ritual Dance of Divine Will",
+        timer: { days: 12, hours: 22, minutes: 5, seconds: 18 },
+        description: `<p>The grandest PvP tournament of the season has arrived! "Ritual Dance of Divine Will" pits the world's strongest players against each other in a series of escalating challenges that test both strategic mastery and real-time combat skills.</p>
+<p>The tournament features a unique bracket system where players ascend through ceremonial ranks inspired by ancient divine rituals. Each rank introduces new rules and modifiers that shake up the meta, forcing competitors to adapt their strategies on the fly.</p>
+<p>Special tournament-exclusive buffs and debuffs create dynamic matches where no two battles play out the same way. The divine ritual theme transforms the battlefield with spectacular visual effects, turning each match into a visually stunning spectacle.</p>
+<p>Top 100 players will receive the exclusive "Divine Dancer" character skin, while all participants earn rewards based on their highest achieved rank. The top 10 finalists will compete in a live-streamed grand finals event with commentary and massive prize pools. Register now to secure your place in history!</p>`,
+        rewards: [
+            { icon: "⚔️", bg: "linear-gradient(135deg,#7c4dff,#e040fb)", name: "Divine Dancer Skin", desc: "Top 100 exclusive" },
+            { icon: "🥇", bg: "linear-gradient(135deg,#ffd700,#ff9100)", name: "Champion Crown", desc: "Top 10 profile crown" },
+            { icon: "💰", bg: "linear-gradient(135deg,#00c853,#69f0ae)", name: "5,000 Gems", desc: "Grand prize pool" },
+            { icon: "🛡️", bg: "linear-gradient(135deg,#2196f3,#42a5f5)", name: "Ritual Shield", desc: "Legendary equipment" },
+            { icon: "📊", bg: "linear-gradient(135deg,#ff5722,#ff8a65)", name: "Season Rankings", desc: "Permanent leaderboard" },
+            { icon: "🎖️", bg: "linear-gradient(135deg,#795548,#bcaaa4)", name: "Participation Medal", desc: "For all competitors" },
+        ]
+    }
+];
+
+function init() {
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'));
+    const content = document.getElementById('pageContent');
+
+    if (isNaN(id) || id < 0 || id >= eventsData.length) {
+        content.innerHTML = '<div style="text-align:center;padding:60px 20px;"><h2>Event not found</h2><p style="color:var(--text-secondary);margin-top:12px;"><a href="events.html" style="color:var(--accent);">View all events</a></p></div>';
+        return;
+    }
+
+    const event = eventsData[id];
+    document.title = `EROVIBE | ${event.title}`;
+
+    content.innerHTML = `
+        <div class="breadcrumb">
+            <a href="index.html">Home</a><span>›</span>
+            <a href="events.html">Events</a><span>›</span>
+            ${event.title}
+        </div>
+
+        <div class="event-banner">
+            <img src="${event.img}" alt="${event.title}">
+        </div>
+
+        <div class="event-header">
+            <span class="event-tag-badge" style="background:${event.tagColor}">${event.tag}</span>
+            <span class="event-title-text">${event.title}</span>
+        </div>
+
+        <div class="timer-block">
+            <div class="timer-label">⏳ Event ends in:</div>
+            <div class="timer-digits">
+                <div class="timer-unit">
+                    <div class="timer-num" id="timerDays">${event.timer.days}</div>
+                    <div class="timer-lbl">DAYS</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-num" id="timerHours">${String(event.timer.hours).padStart(2,'0')}</div>
+                    <div class="timer-lbl">HOURS</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-num" id="timerMins">${String(event.timer.minutes).padStart(2,'0')}</div>
+                    <div class="timer-lbl">MINS</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-num" id="timerSecs">${String(event.timer.seconds).padStart(2,'0')}</div>
+                    <div class="timer-lbl">SECS</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="event-description">${event.description}</div>
+
+        <div class="rewards-section">
+            <div class="section-title">Event Rewards</div>
+            <div class="rewards-grid">
+                ${event.rewards.map(r => `
+                    <div class="reward-card">
+                        <div class="reward-icon" style="background:${r.bg}">${r.icon}</div>
+                        <div class="reward-name">${r.name}</div>
+                        <div class="reward-desc">${r.desc}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div style="text-align:center;margin:32px 0;">
+            <button class="download-btn" onclick="window.location.href='ErovibeSetup.msi'">⬇ Download & Participate</button>
+        </div>
+    `;
+
+    // Countdown timer
+    let totalSeconds = event.timer.days * 86400 + event.timer.hours * 3600 + event.timer.minutes * 60 + event.timer.seconds;
+    setInterval(() => {
+        if (totalSeconds <= 0) return;
+        totalSeconds--;
+        const d = Math.floor(totalSeconds / 86400);
+        const h = Math.floor((totalSeconds % 86400) / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+        document.getElementById('timerDays').textContent = d;
+        document.getElementById('timerHours').textContent = String(h).padStart(2,'0');
+        document.getElementById('timerMins').textContent = String(m).padStart(2,'0');
+        document.getElementById('timerSecs').textContent = String(s).padStart(2,'0');
+    }, 1000);
+}
+
+init();
+</script>
+</body>
+</html>

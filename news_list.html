@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>EROVIBE | News</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d0d1a;
+            --bg-secondary: #12121e;
+            --bg-card: #1a1a2e;
+            --accent: #e91e63;
+            --accent-hover: #f50057;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --text-muted: #666;
+            --border: #2a2a3e;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+
+        /* ── HEADER ── */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: #1a1a2e; height: 50px;
+            display: flex; align-items: center; padding: 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-logo {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 18px; font-weight: 900; color: var(--accent);
+            flex-shrink: 0; margin-right: auto;
+        }
+        .header-logo img { height: 28px; border-radius: 4px; }
+        .header-nav {
+            display: flex; gap: 24px; list-style: none;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+        .header-nav a {
+            color: var(--text-secondary); font-size: 13px; font-weight: 500;
+            transition: color 0.2s; white-space: nowrap;
+        }
+        .header-nav a:hover, .header-nav a.active { color: #fff; }
+        .header-right {
+            display: flex; align-items: center; gap: 12px;
+            margin-left: auto; flex-shrink: 0;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 18px; height: 2px; background: var(--text-secondary); border-radius: 1px; transition: background 0.2s; }
+        .hamburger:hover span { background: #fff; }
+
+        /* ── BREADCRUMBS ── */
+        .breadcrumbs {
+            margin-top: 50px;
+            max-width: 1280px; margin-left: auto; margin-right: auto;
+            padding: 16px 20px 0;
+            font-size: 12px; font-weight: 500;
+        }
+        .breadcrumbs a { color: var(--text-secondary); transition: color 0.2s; }
+        .breadcrumbs a:hover { color: #fff; }
+        .breadcrumbs .sep { color: var(--text-muted); margin: 0 6px; }
+        .breadcrumbs .current { color: var(--accent); }
+
+        /* ── PAGE WRAPPER ── */
+        .page-content {
+            max-width: 1280px; margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        /* ── SECTION TITLES ── */
+        .section-title {
+            font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title::before {
+            content: ''; display: block; width: 4px; height: 18px;
+            background: var(--accent); border-radius: 2px;
+        }
+
+        /* ── HEADLINE NEWS ── */
+        .headline-section { margin: 20px 0 32px; }
+        .headline-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+        }
+        .headline-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; cursor: pointer;
+            transition: all 0.25s;
+        }
+        .headline-card:hover {
+            border-color: var(--accent); transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(233,30,99,0.12);
+        }
+        .headline-img {
+            position: relative; aspect-ratio: 16/9; overflow: hidden;
+        }
+        .headline-img img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.35s;
+        }
+        .headline-card:hover .headline-img img { transform: scale(1.05); }
+        .headline-body { padding: 14px; }
+        .headline-title {
+            font-size: 15px; font-weight: 700; color: #fff;
+            margin-bottom: 8px; line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .headline-date {
+            font-size: 12px; color: var(--accent); font-weight: 500; margin-bottom: 8px;
+        }
+        .headline-game-badge {
+            display: inline-block; padding: 3px 10px;
+            border: 1px solid var(--accent); border-radius: 4px;
+            font-size: 10px; font-weight: 700; color: var(--accent);
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .main-layout {
+            display: flex; gap: 24px; align-items: flex-start;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 280px; flex-shrink: 0;
+            position: sticky; top: 70px;
+        }
+        .sidebar-section { margin-bottom: 4px; }
+        .sidebar-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; cursor: pointer;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 8px; margin-bottom: 2px;
+            transition: background 0.15s;
+            user-select: none;
+        }
+        .sidebar-header:hover { background: rgba(233,30,99,0.06); }
+        .sidebar-header-text {
+            font-size: 12px; font-weight: 700; color: var(--accent);
+            text-transform: uppercase; letter-spacing: 0.3px;
+        }
+        .sidebar-header-arrow {
+            font-size: 10px; color: var(--accent);
+            transition: transform 0.2s;
+        }
+        .sidebar-header.collapsed .sidebar-header-arrow { transform: rotate(180deg); }
+        .sidebar-body {
+            padding: 8px 14px 12px; overflow: hidden;
+            max-height: 600px; transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .sidebar-body.collapsed {
+            max-height: 0; padding-top: 0; padding-bottom: 0;
+        }
+        .sidebar-checkbox {
+            display: flex; align-items: center; gap: 8px;
+            padding: 4px 0; cursor: pointer; font-size: 12px;
+            color: var(--text-secondary); transition: color 0.15s;
+            user-select: none;
+        }
+        .sidebar-checkbox:hover { color: #fff; }
+        .sidebar-checkbox input { display: none; }
+        .sidebar-check-box {
+            width: 16px; height: 16px; border-radius: 3px;
+            border: 1.5px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: all 0.15s;
+            background: transparent;
+        }
+        .sidebar-checkbox input:checked + .sidebar-check-box {
+            background: var(--accent); border-color: var(--accent);
+        }
+        .sidebar-check-box svg {
+            width: 10px; height: 10px; opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .sidebar-checkbox input:checked + .sidebar-check-box svg { opacity: 1; }
+        .sidebar-check-label { line-height: 1.3; }
+
+        /* ── NEWS CONTENT AREA ── */
+        .news-content { flex: 1; min-width: 0; }
+
+        /* ── CATEGORY TABS ── */
+        .category-tabs {
+            display: flex; gap: 0; border-bottom: 1px solid var(--border);
+            margin-bottom: 16px; overflow-x: auto;
+        }
+        .category-tab {
+            padding: 10px 16px; font-size: 13px; font-weight: 600;
+            color: var(--text-secondary); cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s; white-space: nowrap;
+            background: none; border-top: none; border-left: none; border-right: none;
+        }
+        .category-tab:hover { color: #fff; }
+        .category-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ── NEWS CARDS (horizontal) ── */
+        .news-list { display: flex; flex-direction: column; }
+        .news-card {
+            display: flex; gap: 16px; padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer; transition: background 0.15s;
+            border-radius: 6px;
+        }
+        .news-card:hover { background: rgba(255,255,255,0.02); }
+        .news-card:first-child { padding-top: 8px; }
+        .news-card-thumb {
+            width: 240px; height: 150px; flex-shrink: 0;
+            border-radius: 8px; overflow: hidden;
+            background: var(--bg-card);
+        }
+        .news-card-thumb img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.3s;
+        }
+        .news-card:hover .news-card-thumb img { transform: scale(1.03); }
+        .news-card-body {
+            flex: 1; min-width: 0; display: flex; flex-direction: column;
+            justify-content: center; padding: 4px 0;
+        }
+        .news-card-title {
+            font-size: 16px; font-weight: 700; color: #fff;
+            line-height: 1.4; margin-bottom: 8px;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .news-card-preview {
+            font-size: 13px; color: #aaa; line-height: 1.5;
+            margin-bottom: 12px;
+            display: -webkit-box; -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .news-card-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: auto;
+        }
+        .news-card-game-badge {
+            display: inline-block; padding: 3px 10px;
+            border: 1px solid var(--accent); border-radius: 4px;
+            font-size: 10px; font-weight: 700; color: var(--accent);
+        }
+        .news-card-date {
+            font-size: 12px; color: var(--accent); font-weight: 500;
+        }
+
+        /* ── PAGINATION ── */
+        .pagination {
+            display: flex; align-items: center; justify-content: center;
+            gap: 4px; margin-top: 28px; padding: 12px 0;
+        }
+        .page-btn {
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            border-radius: 6px; font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s;
+            background: transparent; border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .page-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .page-btn.active {
+            background: var(--accent); border-color: var(--accent);
+            color: #fff;
+        }
+        .page-btn.disabled {
+            opacity: 0.3; cursor: default; pointer-events: none;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 20px; max-width: 1280px; margin: 0 auto;
+        }
+        .footer-top {
+            display: flex; align-items: center; gap: 20px; margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .footer-logo { font-size: 18px; font-weight: 900; color: var(--accent); }
+        .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-lang {
+            margin-left: auto;
+            padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border);
+            background: none; color: var(--text-secondary); font-size: 12px; cursor: pointer;
+        }
+        .footer-disclaimer {
+            font-size: 11px; color: var(--text-muted); line-height: 1.5; max-width: 800px;
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .sidebar { display: none; }
+            .main-layout { flex-direction: column; }
+        }
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .headline-grid { grid-template-columns: 1fr; }
+            .news-card {
+                flex-direction: column;
+            }
+            .news-card-thumb {
+                width: 100%; height: 180px;
+            }
+            .page-content { padding: 0 12px 32px; }
+            .breadcrumbs { padding: 14px 12px 0; }
+        }
+        @media (max-width: 480px) {
+            .header { padding: 0 12px; }
+            .header-logo { font-size: 16px; }
+            .category-tabs { gap: 0; }
+            .category-tab { padding: 8px 10px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+    <a href="index.html" class="header-logo">
+        
+        EROVIBE
+    </a>
+    <nav>
+        <ul class="header-nav">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="news_list.html" class="active">News</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="forum_list.html">Forum</a></li>
+        </ul>
+    </nav>
+    <div class="header-right">
+        <div class="hamburger" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Nav -->
+<div id="mobileNav" style="display:none;position:fixed;top:50px;left:0;right:0;z-index:999;background:#1a1a2e;border-bottom:1px solid #2a2a3e;flex-direction:column;padding:12px 20px;gap:12px;">
+    <a href="games.html" style="color:#888;font-size:14px;font-weight:600;">Games</a>
+    <a href="news_list.html" style="color:#e91e63;font-size:14px;font-weight:600;">News</a>
+    <a href="events.html" style="color:#888;font-size:14px;font-weight:600;">Events</a>
+    <a href="forum_list.html" style="color:#888;font-size:14px;font-weight:600;">Forum</a>
+</div>
+
+<!-- ── BREADCRUMBS ── -->
+<div class="breadcrumbs">
+    <a href="index.html">EROVIBE</a>
+    <span class="sep">›</span>
+    <span class="current">News</span>
+</div>
+
+<!-- ── PAGE CONTENT ── -->
+<div class="page-content">
+
+    <!-- Headline News -->
+    <div class="headline-section">
+        <div class="section-title">Headline News</div>
+        <div class="headline-grid" id="headlineGrid"></div>
+    </div>
+
+    <!-- Main two-column layout -->
+    <div class="main-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <!-- News content -->
+        <div class="news-content">
+            <!-- Category tabs -->
+            <div class="category-tabs" id="categoryTabs"></div>
+
+            <!-- News list -->
+            <div class="news-list" id="newsList"></div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+    <div class="footer-top">
+        <a href="index.html" class="footer-logo">EROVIBE</a>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Support</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <select class="footer-lang" onchange="alert('Coming soon!')">
+            <option>English</option>
+            <option>日本語</option>
+            <option>中文</option>
+            <option>한국어</option>
+        </select>
+    </div>
+    <p class="footer-disclaimer">
+        © 2026 EROVIBE. All rights reserved. All games are property of their respective developers.<br>
+        This website contains age-restricted content. You must be 18+ to access. All characters depicted are 18 years of age or older.
+    </p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
+
+const headlineNews = [
+    { id: 0, img: "img/news_headline_1.jpg", title: "Ark Re:Code Launches with Record-Breaking Day 1 Downloads", date: "Mar 8, 2026", game: "Ark Re:Code" },
+    { id: 1, img: "img/news_headline_2.jpg", title: "Rise of Eros Stays #1 for 3rd Consecutive Month", date: "Mar 7, 2026", game: "Rise of Eros" },
+    { id: 2, img: "img/news_headline_3.jpg", title: "Cherry Tale Valentine's Limited Hero Cupid Debuts!", date: "Mar 6, 2026", game: "Cherry Tale" },
+];
+
+const newsItems = [
+    { id: 3, thumb: "img/banner_1772787636180.gif", game: "Passion Industry", title: "Meet Lumi, a sensual floral enchantress", preview: "LUMI IS NOW IN THE GAME — the new update is live! A major update has arrived with a new heroine, fresh events, and plenty of rewards...", date: "March, 9th, 2026", cat: "Game News" },
+    { id: 4, thumb: "img/banner_1772598249788.gif", game: "Megaha:Re", title: "New SSR \"Vanilla\" Arrives!", preview: "Thank you for always playing Megaha:Re. From 2026/3/6 07:00 (UTC), the new SSR character Vanilla will make her debut...", date: "March, 8th, 2026", cat: "Game Announcements" },
+    { id: 5, thumb: "img/banner_1771921642555.gif", game: "Star Lusts", title: "03/09 Update Preview", preview: "Hello, Commanders! In order to provide you a better gaming experience, the game will be undergoing maintenance on 2026/03/09...", date: "March, 7th, 2026", cat: "Game News" },
+    { id: 6, thumb: "img/banner_1772441046746.gif", game: "Ero Dorado", title: "03/05 Update & Maintenance Notice", preview: "Hello, Contractors. Maintenance will be conducted for the platform update and application of new content...", date: "March, 5th, 2026", cat: "General News" },
+    { id: 7, thumb: "img/banner_1771355454585.gif", game: "Rise of Eros", title: "03/09 maintenance update", preview: "Dear Immortals, We will perform a maintenance and updates on March 10th, 2026. The process is expected to be completed at 17:00...", date: "March, 9th, 2026", cat: "Updates" },
+    { id: 8, thumb: "img/banner_1772607188284.gif", game: "TenkafuMA", title: "3/11 announcement — New collab event!", preview: "Dear players, We will be performing maintenance on March 11, 2026. The maintenance is expected to be completed by 12:00 PM...", date: "March, 9th, 2026", cat: "Game Announcements" },
+    { id: 9, thumb: "img/banner_1771815320138.gif", game: "Lust Goddess", title: "Lust Goddess v3.5 Island Event", preview: "A new island exploration event has launched! Complete daily expeditions, collect resource nodes, and challenge the boss...", date: "March, 8th, 2026", cat: "Game News" },
+    { id: 10, thumb: "img/banner_1772785219953.gif", game: "Ark Re:Code", title: "Ark Re:Code surpasses 1M downloads", preview: "The sci-fi action RPG continues to break records across all platforms. Community celebrates with special event rewards...", date: "March, 7th, 2026", cat: "Special Reports" },
+    { id: 0, thumb: "img/news_headline_1.jpg", game: "Ark Re:Code", title: "Ark Re:Code Launches with Record-Breaking Day 1", preview: "The highly anticipated sci-fi RPG breaks download records on launch day. Players praise the stunning visuals and engaging combat...", date: "March, 8th, 2026", cat: "Special Reports" },
+    { id: 1, thumb: "img/news_headline_2.jpg", game: "Rise of Eros", title: "Rise of Eros Stays #1 for 3rd Consecutive Month", preview: "The popular strategy RPG continues to dominate charts worldwide. New content update adds more end-game features...", date: "March, 7th, 2026", cat: "EROLABS" },
+    { id: 2, thumb: "img/news_headline_3.jpg", game: "Cherry Tale", title: "Cherry Tale Valentine's Limited Hero Cupid Debuts!", preview: "The romantic RPG celebrates Valentine's with an exclusive limited character. Players can earn special rewards through events...", date: "March, 6th, 2026", cat: "EROLABS" },
+    { id: 11, thumb: "img/banner_1772787777692.gif", game: "Queen of Stars", title: "Queen of Stars guild raid system launch", preview: "Cooperative gameplay content arrives with massive boss battles. Form alliances and compete for exclusive guild rewards...", date: "March, 5th, 2026", cat: "General News" },
+];
+
+const categories = ["All", "General News", "EROLABS", "Game Announcements", "Special Reports", "Game News"];
+
+const sidebarData = {
+    tags: ["All", "Events", "Updates", "Major"],
+    onlineMale: ["Throne of Desire", "Ark Re:Code", "Rise of Eros", "TenkafuMA", "Lust Goddess", "Lusty Legends", "Megaha:Re", "Star Lusts", "Passion Industry", "Ero Dorado", "IDOL SEX", "The Emperor", "Demoninspector", "Legend of Daughterland", "Horizon Walker"],
+    onlineFemale: ["NU: Carnival", "Queen of Stars", "What in Hell is Bad", "Cherry Tale", "Zerowake GATES"],
+    singleMale: ["My Part-Time Job", "Succubus Kiss", "MILF Conditioning", "Idol Correction Chronicles", "Girl in a Box", "The Neighboring Streamer", "Breeding Frenzy!", "Succubus Heaven"],
+    singleFemale: ["Norn's Dine", "Sickly Days and Summer Traces", "The Daily Life of Serving Doll"],
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+
+let activeCat = "All";
+let currentPage = 1;
+const perPage = 6;
+let selectedGames = new Set();
+let collapsedSections = new Set();
+
+// Initialize selected games (male-oriented default selected)
+sidebarData.onlineMale.forEach(g => selectedGames.add(g));
+sidebarData.singleMale.forEach(g => selectedGames.add(g));
+// Tags — all selected by default
+let selectedTags = new Set(sidebarData.tags);
+
+// ══════════════════════════════════════════════════════
+// RENDER: HEADLINES
+// ══════════════════════════════════════════════════════
+
+function renderHeadlines() {
+    document.getElementById('headlineGrid').innerHTML = headlineNews.map(h => `
+        <div class="headline-card" onclick="window.location.href='news.html?id=${h.id}'">
+            <div class="headline-img"><img src="${h.img}" alt="${h.game}" loading="lazy"></div>
+            <div class="headline-body">
+                <div class="headline-date">${h.date}</div>
+                <div class="headline-title">${h.title}</div>
+                <span class="headline-game-badge">${h.game}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER: SIDEBAR
+// ══════════════════════════════════════════════════════
+
+const checkSvg = `<svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function buildSidebarSection(id, title, items, defaultChecked) {
+    const isCollapsed = collapsedSections.has(id);
+    const checkboxes = items.map(item => {
+        const checked = id === 'tags' ? selectedTags.has(item) : (defaultChecked ? selectedGames.has(item) : selectedGames.has(item));
+        return `
+            <label class="sidebar-checkbox">
+                <input type="checkbox" data-section="${id}" value="${item}" ${checked ? 'checked' : ''} onchange="handleCheckboxChange(this)">
+                <span class="sidebar-check-box">${checkSvg}</span>
+                <span class="sidebar-check-label">${item}</span>
+            </label>
+        `;
+    }).join('');
+
+    return `
+        <div class="sidebar-section">
+            <div class="sidebar-header ${isCollapsed ? 'collapsed' : ''}" onclick="toggleSection('${id}')">
+                <span class="sidebar-header-text">${title}</span>
+                <span class="sidebar-header-arrow">${isCollapsed ? '▼' : '▲'}</span>
+            </div>
+            <div class="sidebar-body ${isCollapsed ? 'collapsed' : ''}" id="section-${id}">
+                ${checkboxes}
+            </div>
+        </div>
+    `;
+}
+
+function renderSidebar() {
+    document.getElementById('sidebar').innerHTML =
+        buildSidebarSection('tags', 'Tags', sidebarData.tags, true) +
+        buildSidebarSection('onlineMale', 'Online Game — Male-Oriented', sidebarData.onlineMale, true) +
+        buildSidebarSection('onlineFemale', 'Online Game — Female-Oriented', sidebarData.onlineFemale, false) +
+        buildSidebarSection('singleMale', 'Single-Player — Male-Oriented', sidebarData.singleMale, true) +
+        buildSidebarSection('singleFemale', 'Single-Player — Female-Oriented', sidebarData.singleFemale, false);
+}
+
+function toggleSection(id) {
+    if (collapsedSections.has(id)) {
+        collapsedSections.delete(id);
+    } else {
+        collapsedSections.add(id);
+    }
+    renderSidebar();
+}
+
+function handleCheckboxChange(el) {
+    const section = el.dataset.section;
+    const value = el.value;
+    const checked = el.checked;
+
+    if (section === 'tags') {
+        if (checked) selectedTags.add(value);
+        else selectedTags.delete(value);
+    } else {
+        if (checked) selectedGames.add(value);
+        else selectedGames.delete(value);
+    }
+
+    currentPage = 1;
+    renderNewsList();
+    renderPagination();
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER: CATEGORY TABS
+// ══════════════════════════════════════════════════════
+
+function renderCategoryTabs() {
+    document.getElementById('categoryTabs').innerHTML = categories.map(cat => `
+        <button class="category-tab ${cat === activeCat ? 'active' : ''}" onclick="switchCategory('${cat}')">${cat === 'All' ? 'All' : cat}</button>
+    `).join('');
+}
+
+function switchCategory(cat) {
+    activeCat = cat;
+    currentPage = 1;
+    renderCategoryTabs();
+    renderNewsList();
+    renderPagination();
+}
+
+// ══════════════════════════════════════════════════════
+// FILTER + RENDER: NEWS LIST
+// ══════════════════════════════════════════════════════
+
+function getFilteredNews() {
+    return newsItems.filter(item => {
+        // Category filter
+        if (activeCat !== "All" && item.cat !== activeCat) return false;
+        // Game filter (sidebar checkboxes)
+        if (selectedGames.size > 0 && !selectedGames.has(item.game)) return false;
+        return true;
+    });
+}
+
+function renderNewsList() {
+    const filtered = getFilteredNews();
+    const start = (currentPage - 1) * perPage;
+    const page = filtered.slice(start, start + perPage);
+
+    if (page.length === 0) {
+        document.getElementById('newsList').innerHTML = `
+            <div style="text-align:center;padding:48px 0;color:var(--text-muted);font-size:14px;">
+                No news found for the selected filters.
+            </div>
+        `;
+        return;
+    }
+
+    document.getElementById('newsList').innerHTML = page.map(n => `
+        <div class="news-card" onclick="window.location.href='news.html?id=${n.id}'">
+            <div class="news-card-thumb"><img src="${n.thumb}" alt="${n.title}" loading="lazy"></div>
+            <div class="news-card-body">
+                <div class="news-card-title">${n.title}</div>
+                <div class="news-card-preview">${n.preview}</div>
+                <div class="news-card-footer">
+                    <span class="news-card-game-badge">${n.game}</span>
+                    <span class="news-card-date">${n.date}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER: PAGINATION
+// ══════════════════════════════════════════════════════
+
+function renderPagination() {
+    const filtered = getFilteredNews();
+    const totalPages = Math.ceil(filtered.length / perPage);
+
+    if (totalPages <= 1) {
+        document.getElementById('pagination').innerHTML = '';
+        return;
+    }
+
+    let html = '';
+    // Prev
+    html += `<button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" onclick="goToPage(${currentPage - 1})">‹</button>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+    }
+
+    // Next
+    html += `<button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" onclick="goToPage(${currentPage + 1})">›</button>`;
+
+    document.getElementById('pagination').innerHTML = html;
+}
+
+function goToPage(page) {
+    const filtered = getFilteredNews();
+    const totalPages = Math.ceil(filtered.length / perPage);
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    renderNewsList();
+    renderPagination();
+    // Scroll to top of news list
+    document.getElementById('categoryTabs').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ══════════════════════════════════════════════════════
+// MOBILE NAV
+// ══════════════════════════════════════════════════════
+
+function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+
+renderHeadlines();
+renderSidebar();
+renderCategoryTabs();
+renderNewsList();
+renderPagination();
+</script>
+</body>
+</html>

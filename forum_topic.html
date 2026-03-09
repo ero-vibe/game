@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>EROVIBE | Forum Topic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d0d1a;
+            --bg-secondary: #12121e;
+            --bg-card: #1a1a2e;
+            --accent: #e91e63;
+            --accent-hover: #f50057;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --text-muted: #666;
+            --border: #2a2a3e;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: #1a1a2e; height: 50px;
+            display: flex; align-items: center; padding: 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-logo {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 18px; font-weight: 900; color: var(--accent);
+            flex-shrink: 0; margin-right: auto;
+        }
+        .header-nav {
+            display: flex; gap: 24px; list-style: none;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+        .header-nav a {
+            color: var(--text-secondary); font-size: 13px; font-weight: 500;
+            transition: color 0.2s; white-space: nowrap;
+        }
+        .header-nav a:hover, .header-nav a.active { color: #fff; }
+        .header-right {
+            display: flex; align-items: center; gap: 12px;
+            margin-left: auto; flex-shrink: 0;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 18px; height: 2px; background: var(--text-secondary); border-radius: 1px; }
+
+        .page-content {
+            margin-top: 50px; max-width: 900px; margin-left: auto; margin-right: auto;
+            padding: 24px 20px;
+        }
+
+        .breadcrumb {
+            font-size: 12px; color: var(--text-muted); margin-bottom: 16px;
+        }
+        .breadcrumb a { color: var(--text-secondary); transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--accent); }
+
+        .topic-header {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; margin-bottom: 20px;
+        }
+        .topic-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+        .topic-meta {
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            font-size: 12px; color: var(--text-secondary);
+        }
+        .topic-category {
+            display: inline-block; padding: 3px 10px; border-radius: 4px;
+            font-size: 10px; font-weight: 700;
+            background: rgba(233,30,99,0.12); color: var(--accent);
+            border: 1px solid rgba(233,30,99,0.25);
+        }
+        .topic-stats {
+            display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-muted);
+        }
+        .topic-stats span { display: flex; align-items: center; gap: 4px; }
+        .stat-accent { color: var(--accent); font-weight: 600; }
+
+        .post {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; margin-bottom: 12px;
+        }
+        .post-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+        }
+        .post-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--accent); display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700; color: #fff; flex-shrink: 0;
+        }
+        .post-author { font-size: 13px; font-weight: 700; color: #fff; }
+        .post-date { font-size: 11px; color: var(--text-muted); }
+        .post-op-badge {
+            display: inline-block; padding: 1px 6px; border-radius: 3px;
+            font-size: 9px; font-weight: 700; background: var(--accent); color: #fff;
+            margin-left: 6px;
+        }
+        .post-body { font-size: 14px; color: #ccc; line-height: 1.7; }
+        .post-body p { margin-bottom: 12px; }
+        .post-actions {
+            display: flex; gap: 16px; margin-top: 14px; padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .post-action {
+            font-size: 12px; color: var(--text-muted); cursor: pointer;
+            transition: color 0.2s; display: flex; align-items: center; gap: 4px;
+        }
+        .post-action:hover { color: var(--accent); }
+
+        .reply-box {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; margin-top: 20px;
+        }
+        .reply-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+        .reply-textarea {
+            width: 100%; min-height: 100px; padding: 12px;
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: 8px; color: #fff; font-family: inherit; font-size: 13px;
+            resize: vertical;
+        }
+        .reply-textarea:focus { outline: none; border-color: var(--accent); }
+        .reply-submit {
+            margin-top: 10px; padding: 8px 24px; border-radius: 8px; border: none;
+            background: var(--accent); color: #fff;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+        }
+        .reply-submit:hover { background: var(--accent-hover); }
+
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 20px; max-width: 900px; margin: 40px auto 0;
+        }
+        .footer-top { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; flex-wrap: wrap; }
+        .footer-logo { font-size: 18px; font-weight: 900; color: var(--accent); }
+        .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-disclaimer { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .page-content { padding: 16px 12px; }
+            .topic-title { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html" class="header-logo">EROVIBE</a>
+    <nav>
+        <ul class="header-nav">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="news_list.html">News</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="forum_list.html" class="active">Forum</a></li>
+        </ul>
+    </nav>
+    <div class="header-right">
+        <div class="hamburger"><span></span><span></span><span></span></div>
+    </div>
+</header>
+
+<div class="page-content">
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> › <a href="forum_list.html">Forum</a> › <span id="breadcrumbCategory"></span>
+    </div>
+
+    <div class="topic-header" id="topicHeader"></div>
+
+    <div id="postsContainer"></div>
+
+    <div class="reply-box">
+        <h3>💬 Post a Reply</h3>
+        <textarea class="reply-textarea" placeholder="Write your reply..."></textarea>
+        <button class="reply-submit" onclick="alert('Sign up to post replies!')">Post Reply</button>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-top">
+        <div class="footer-logo">EROVIBE</div>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Support</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </div>
+    <p class="footer-disclaimer">
+        © 2026 EROVIBE. All rights reserved.<br>
+        This website contains age-restricted content. You must be 18+ to access.
+    </p>
+</footer>
+
+<script>
+const forumTopics = [
+    {
+        title: "Rise of Eros — Best team comp for Season 4 PvP?",
+        author: "EroVibe_Hunter", category: "Online Games", replies: 2847, views: 14392,
+        body: `<p>Hey everyone! Season 4 just dropped and the meta has shifted HARD. The new characters completely changed the PvP landscape. I've been struggling to stay in Top 100 and wanted to get some input from the community.</p>
+<p>My current team is: Miriam (frontline), Sera (DPS), Alana (support), Lynn (healer). It was great in Season 3 but now I'm getting destroyed by teams running double DPS comps with the new Keleira.</p>
+<p>What are you guys running? Has anyone found a good counter to the Keleira + Inase combo? Any tips for positioning would be appreciated too.</p>`,
+        replies_data: [
+            { author: "RiseGod42", avatar: "R", date: "Mar 8, 2026", body: "<p>Drop Lynn for Cartilla. The new Cartilla skin gives her insane burst damage and she can one-shot most supports. I climbed from rank 200 to rank 35 after the switch.</p><p>For positioning: put Miriam front-center, Cartilla behind her, Sera on the flank. Trust me on this one.</p>" },
+            { author: "PvPMaster", avatar: "P", date: "Mar 8, 2026", body: "<p>The Keleira + Inase combo is beatable if you have Misaki with the Holy Shield passive. She reduces incoming crit damage by 40% which basically neutralizes Keleira's burst.</p>" },
+            { author: "CasualPlayer99", avatar: "C", date: "Mar 7, 2026", body: "<p>Honestly I just run full waifu team and don't care about PvP ranking lol. But if you want meta, the Korean server data shows Keleira/Cartilla/Miriam/Alana as the top 4 comp right now with 67% win rate in top 100.</p>" },
+            { author: "EroVibe_Hunter", avatar: "E", date: "Mar 7, 2026", body: "<p>Thanks for the tips everyone! I'm going to try the Cartilla swap and the Misaki counter strat. Will report back with results after I test for a few days.</p>" },
+        ]
+    },
+    {
+        title: "NU: Carnival — Complete Beginner Guide 2026",
+        author: "CarnivalKing", category: "Guides", replies: 1543, views: 9218,
+        body: `<p>Welcome to the ultimate NU: Carnival beginner guide! I've been playing since launch and wanted to create a comprehensive resource for new players joining in 2026.</p>
+<p><strong>1. Rerolling:</strong> Always reroll for at least one SSR character. The current best targets are Yakumo (healer) and Edmond (DPS). It takes about 5-10 minutes per reroll.</p>
+<p><strong>2. Early Game Priority:</strong> Focus on completing the main story first. Don't spend gems on standard banner — save for limited banners. Level your main DPS first, then healer, then tanks.</p>
+<p><strong>3. Daily Routine:</strong> Always do your dailies, spend stamina, and check the shop for free items. The event shop usually has the best value for new players.</p>`,
+        replies_data: [
+            { author: "NewPlayer2026", avatar: "N", date: "Mar 6, 2026", body: "<p>This is exactly what I needed! Just started yesterday and was completely lost. The rerolling tip saved me — got Yakumo on my 3rd try!</p>" },
+            { author: "VeteranKin", avatar: "V", date: "Mar 5, 2026", body: "<p>Great guide! I'd add that new players should also focus on the intimacy system early. It's the main way to unlock special scenes and it gives permanent stat boosts to your characters.</p>" },
+            { author: "BudgetGamer", avatar: "B", date: "Mar 5, 2026", body: "<p>As a F2P player, I can confirm saving gems for limited banners is the way to go. I've been playing 6 months and have 4 limited SSRs just from saving. Patience pays off!</p>" },
+        ]
+    },
+    {
+        title: "Ark Re:Code First Impressions — Worth the hype?",
+        author: "NightOwl99", category: "Reviews", replies: 892, views: 6740,
+        body: `<p>Just played Ark Re:Code for about 20 hours and wanted to share my first impressions. TLDR: It's genuinely good but has some issues.</p>
+<p><strong>Pros:</strong></p>
+<p>• The art style is absolutely incredible. Every character design is top-tier and the sci-fi environments are gorgeous. The UI is clean and modern — best I've seen in this genre.</p>
+<p>• Combat is actually engaging. It's not just auto-battle like most gacha games. You need to think about positioning, elemental combos, and timing your skills.</p>
+<p>• The story surprised me. It's actually well-written with interesting characters and plot twists. The sci-fi setting feels fresh compared to the typical fantasy setting.</p>
+<p><strong>Cons:</strong></p>
+<p>• Gacha rates feel a bit stingy. 0.7% for SSR is below industry standard. The pity system exists but it's at 200 pulls which is rough for F2P.</p>
+<p>• Stamina system is very restrictive. You run out fast and recharge is slow. This gates progression hard in the mid-game.</p>
+<p>• Some translations are rough — you can tell it was originally in Chinese/Korean.</p>
+<p>Overall I'd rate it 8/10. Definitely worth trying, especially if you like sci-fi. What do you all think?</p>`,
+        replies_data: [
+            { author: "SciFiLover", avatar: "S", date: "Mar 8, 2026", body: "<p>Agree on all points. The art direction is insane — the character Live2D animations are some of the best I've ever seen. The combat keeps me engaged which is rare for gacha games.</p><p>The stamina issue is real though. I hope they address it in the next update.</p>" },
+            { author: "GachaVeteran", avatar: "G", date: "Mar 7, 2026", body: "<p>The 0.7% SSR rate is actually comparable to some other top games. But the 200 pity is definitely too high. Most games do 80-120 now. Hopefully they'll adjust it.</p>" },
+            { author: "F2PGod", avatar: "F", date: "Mar 7, 2026", body: "<p>Been playing F2P and honestly it's manageable. The game gives decent free pulls through events and achievements. I got 2 SSRs in my first week without spending. The key is to be selective with banners.</p>" },
+            { author: "ArtFan", avatar: "A", date: "Mar 6, 2026", body: "<p>Downloaded it purely for the art and character designs. Was not disappointed. Even the menu screens and loading screens are beautiful. The attention to detail is something else.</p>" },
+        ]
+    },
+    {
+        title: "Lust Goddess — Island event tips & strategy guide",
+        author: "GoddessFan", category: "Events", replies: 634, views: 4191,
+        body: `<p>The new Island exploration event in Lust Goddess v3.5 is here and it's the biggest content update this year! Here are my tips to maximize your rewards.</p>
+<p><strong>Priority order for resources:</strong> Exclusive Character Shards > Premium Currency > Equipment > Everything else. The character shards are limited and you can't get them after the event ends.</p>
+<p><strong>Daily checklist:</strong> Complete all 3 island expeditions, collect resource nodes (they respawn every 8 hours), do the daily boss challenge, and open all treasure chests.</p>
+<p>The hidden achievement for exploring 100% of the island gives 500 gems — don't miss it!</p>`,
+        replies_data: [
+            { author: "IslandExplorer", avatar: "I", date: "Mar 7, 2026", body: "<p>Thanks for the guide! I missed the hidden area in the northeast corner. There's a secret cave behind the waterfall that has rare materials.</p>" },
+            { author: "MinMaxer", avatar: "M", date: "Mar 6, 2026", body: "<p>For anyone struggling with the island boss: use freeze comp. The boss is weak to ice and if you time your freeze with the DPS burst, you can one-phase it easily.</p>" },
+        ]
+    },
+    {
+        title: "My Part-Time Job — All hidden scenes & endings guide",
+        author: "SinglePlayerPro", category: "Single-Player", replies: 521, views: 3887,
+        body: `<p>Completed 100% of My Part-Time Job With a Flirty Mistress and here's my complete guide to all hidden scenes and endings. SPOILER WARNING!</p>
+<p>There are 7 endings total: 3 main endings, 2 secret endings, and 2 bad endings. Most people miss the secret endings because they require very specific choices in Chapter 3.</p>
+<p><strong>Secret Ending 1 "True Love":</strong> In Chapter 3, when she asks about your weekend plans, choose "Stay home" → "Cook dinner" → "Confess feelings". This unlocks the rooftop scene in Chapter 5.</p>
+<p><strong>Secret Ending 2 "Midnight Promise":</strong> You need to find all 5 hidden letters scattered throughout the game. They appear as tiny glowing dots in the background of certain scenes.</p>
+<p>Both secret endings unlock exclusive CG art that's absolutely worth the effort. The art quality in this game is phenomenal.</p>`,
+        replies_data: [
+            { author: "VNCompletionist", avatar: "V", date: "Mar 6, 2026", body: "<p>I was stuck on the 4th hidden letter for HOURS. For anyone looking — it's in the kitchen scene during Chapter 4, bottom-left corner near the coffee maker. Almost invisible!</p>" },
+            { author: "CasualReader", avatar: "C", date: "Mar 5, 2026", body: "<p>The True Love ending made me genuinely emotional. The writing in this game is surprisingly good for the genre. Highly recommend going for all endings.</p>" },
+        ]
+    },
+    {
+        title: "TenkafuMA vs Queen of Stars — Which has better gacha value?",
+        author: "GachaExpert", category: "Discussion", replies: 448, views: 2993,
+        body: `<p>I've been playing both TenkafuMA and Queen of Stars for 3+ months and wanted to do a detailed comparison of their gacha systems for anyone deciding between them.</p>
+<p><strong>TenkafuMA:</strong> SSR rate 1.2%, pity at 100, about 60 free pulls/month, limited characters rerun every 3-4 months. Dupes are useful but not mandatory.</p>
+<p><strong>Queen of Stars:</strong> SSR rate 1.0%, pity at 80, about 50 free pulls/month, limited characters rarely rerun. Dupes are very important for max power.</p>
+<p>My verdict: TenkafuMA is more F2P-friendly overall, but Queen of Stars has better art and more engaging gameplay. Pick based on what matters more to you.</p>`,
+        replies_data: [
+            { author: "WhalePlayer", avatar: "W", date: "Mar 5, 2026", body: "<p>As someone who spends on both: TenkafuMA gives way better value per dollar. Their monthly pass is the best deal in gacha gaming right now. Queen of Stars bundles are overpriced.</p>" },
+            { author: "ArtEnjoyer", avatar: "A", date: "Mar 5, 2026", body: "<p>Queen of Stars art is genuinely museum-quality. I play it more as a waifu collector than a competitive game. The Live2D animations are insane.</p>" },
+        ]
+    },
+    {
+        title: "Best single-player visual novels of 2026 so far",
+        author: "VNFanatic", category: "Discussion", replies: 312, views: 2105,
+        body: `<p>We're already in March and there have been some amazing VN releases! Here's my top 5 so far:</p>
+<p><strong>1. My Part-Time Job With a Flirty Mistress</strong> — Beautiful art, great writing, multiple endings. 9/10</p>
+<p><strong>2. Sickly Days and Summer Traces</strong> — Emotional slice-of-life story that hit different. 8.5/10</p>
+<p><strong>3. Norn's Dine</strong> — Cozy dating sim with incredible food CGs. 8/10</p>
+<p><strong>4. Succubus Heaven</strong> — Dark fantasy with RPG elements. Stunning visuals. 8/10</p>
+<p><strong>5. The Daily Life of Serving Doll</strong> — Unique concept, surprisingly deep story. 7.5/10</p>
+<p>What are your favorites? Anything I'm missing?</p>`,
+        replies_data: [
+            { author: "VNAddict", avatar: "V", date: "Mar 4, 2026", body: "<p>Great list! I'd add Idol Correction Chronicles at #3. The school setting and character dynamics are really well done. Plus the multiple route structure gives it great replay value.</p>" },
+            { author: "StoryFirst", avatar: "S", date: "Mar 3, 2026", body: "<p>Sickly Days and Summer Traces is my GOTY candidate. The writing is so honest and the art perfectly captures that melancholic summer atmosphere. Made me cry twice.</p>" },
+        ]
+    },
+    {
+        title: "Succubus Heaven review — Visually stunning dark RPG",
+        author: "DarkGamer", category: "Reviews", replies: 289, views: 1877,
+        body: `<p>Just finished Succubus Heaven after about 30 hours and wanted to share my thoughts.</p>
+<p><strong>Visuals: 10/10</strong> — This is easily one of the most beautiful adult games I've ever played. The character art, the environments, the spell effects — everything is gorgeous. The dark fantasy aesthetic is perfectly executed.</p>
+<p><strong>Gameplay: 7/10</strong> — The RPG combat is decent but nothing groundbreaking. Turn-based with elemental weaknesses. It works but doesn't innovate. The dungeon exploration is more interesting with puzzles and hidden paths.</p>
+<p><strong>Story: 8/10</strong> — Surprisingly engaging dark fantasy narrative. The world-building is deep and the characters have actual development arcs. The plot twists in the latter half caught me off guard.</p>
+<p><strong>Overall: 8/10</strong> — If you love dark fantasy aesthetics and don't mind turn-based combat, this is a must-play. The production values are incredibly high for the genre.</p>`,
+        replies_data: [
+            { author: "DarkFantasyFan", avatar: "D", date: "Mar 3, 2026", body: "<p>Completely agree on the visuals. The boss designs in particular are amazing. The final boss had my jaw on the floor. Also the OST is surprisingly good — the main theme is haunting.</p>" },
+            { author: "RPGVeteran", avatar: "R", date: "Mar 2, 2026", body: "<p>The combat gets better in the second half when you unlock more party members and skill combos. Early game is a bit of a slog though. Worth pushing through for the story and art.</p>" },
+        ]
+    },
+];
+
+// Get topic id from URL
+const urlParams = new URLSearchParams(window.location.search);
+const topicId = parseInt(urlParams.get('id')) || 0;
+const topic = forumTopics[topicId] || forumTopics[0];
+
+// Update page title
+document.title = `EROVIBE | ${topic.title}`;
+
+// Breadcrumb
+document.getElementById('breadcrumbCategory').textContent = topic.category;
+
+// Topic header
+document.getElementById('topicHeader').innerHTML = `
+    <h1 class="topic-title">${topic.title}</h1>
+    <div class="topic-meta">
+        <span class="topic-category">${topic.category}</span>
+        <span>by <strong>${topic.author}</strong></span>
+        <span>· Mar 2026</span>
+    </div>
+    <div class="topic-stats">
+        <span>💬 <span class="stat-accent">${topic.replies.toLocaleString()}</span> replies</span>
+        <span>👁 ${topic.views.toLocaleString()} views</span>
+    </div>
+`;
+
+// Posts
+const colors = ['#e91e63','#9c27b0','#2196f3','#00c853','#ff9100','#7c4dff','#ff4444','#00bcd4'];
+let postsHTML = `
+    <div class="post">
+        <div class="post-header">
+            <div class="post-avatar" style="background:${colors[topicId % colors.length]}">${topic.author[0]}</div>
+            <div>
+                <div class="post-author">${topic.author}<span class="post-op-badge">OP</span></div>
+                <div class="post-date">Mar 2026</div>
+            </div>
+        </div>
+        <div class="post-body">${topic.body}</div>
+        <div class="post-actions">
+            <span class="post-action" onclick="alert('Sign up to like posts!')">👍 Like</span>
+            <span class="post-action" onclick="alert('Sign up to reply!')">💬 Reply</span>
+            <span class="post-action" onclick="alert('Sign up to share!')">🔗 Share</span>
+        </div>
+    </div>
+`;
+
+topic.replies_data.forEach((r, i) => {
+    postsHTML += `
+        <div class="post">
+            <div class="post-header">
+                <div class="post-avatar" style="background:${colors[(topicId + i + 1) % colors.length]}">${r.avatar}</div>
+                <div>
+                    <div class="post-author">${r.author}</div>
+                    <div class="post-date">${r.date}</div>
+                </div>
+            </div>
+            <div class="post-body">${r.body}</div>
+            <div class="post-actions">
+                <span class="post-action" onclick="alert('Sign up to like posts!')">👍 Like</span>
+                <span class="post-action" onclick="alert('Sign up to reply!')">💬 Reply</span>
+            </div>
+        </div>
+    `;
+});
+
+document.getElementById('postsContainer').innerHTML = postsHTML;
+</script>
+</body>
+</html>

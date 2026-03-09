@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>EROVIBE | All Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d0d1a;
+            --bg-secondary: #12121e;
+            --bg-card: #1a1a2e;
+            --accent: #e91e63;
+            --accent-hover: #f50057;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --text-muted: #666;
+            --border: #2a2a3e;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+
+        /* Header */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: #1a1a2e; height: 50px;
+            display: flex; align-items: center; padding: 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-logo {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 18px; font-weight: 900; color: var(--accent);
+            flex-shrink: 0; margin-right: auto;
+        }
+        .header-logo img { height: 28px; border-radius: 4px; }
+        .header-nav {
+            display: flex; gap: 24px; list-style: none;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+        .header-nav a {
+            color: var(--text-secondary); font-size: 13px; font-weight: 500;
+            transition: color 0.2s; white-space: nowrap;
+        }
+        .header-nav a:hover, .header-nav a.active { color: #fff; }
+        .header-right {
+            display: flex; align-items: center; gap: 12px;
+            margin-left: auto; flex-shrink: 0;
+        }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 18px; height: 2px; background: var(--text-secondary); border-radius: 1px; transition: background 0.2s; }
+        .hamburger:hover span { background: #fff; }
+
+        /* Page Content */
+        .page-content {
+            margin-top: 50px; max-width: 1280px; margin-left: auto; margin-right: auto;
+            padding: 24px 20px;
+        }
+        .page-title {
+            font-size: 24px; font-weight: 900; margin-bottom: 20px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .filter-tabs {
+            display: flex; gap: 0; background: var(--bg-card);
+            border-radius: 8px; overflow: hidden; border: 1px solid var(--border);
+        }
+        .filter-tab {
+            padding: 8px 20px; font-size: 13px; font-weight: 600;
+            color: var(--text-secondary); cursor: pointer;
+            border: none; background: none; transition: all 0.2s; white-space: nowrap;
+        }
+        .filter-tab.active { background: var(--accent); color: #fff; }
+        .filter-tab:hover:not(.active) { color: #fff; }
+        .search-input {
+            flex: 1; min-width: 200px; padding: 8px 14px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 8px; color: #fff; font-size: 13px;
+            font-family: inherit; outline: none; transition: border-color 0.2s;
+        }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus { border-color: var(--accent); }
+
+        /* Game Cards Grid */
+        .games-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .game-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px;
+            display: flex; align-items: flex-start; gap: 14px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .game-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .game-card-icon {
+            width: 80px; height: 80px; border-radius: 14px; overflow: hidden;
+            flex-shrink: 0; background: var(--bg-secondary);
+        }
+        .game-card-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .game-card-info { flex: 1; min-width: 0; }
+        .game-card-name {
+            font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .game-card-genre { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+        .game-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+        .game-tag {
+            padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;
+            background: rgba(233,30,99,0.15); color: var(--accent); border: 1px solid rgba(233,30,99,0.3);
+        }
+        .download-btn {
+            padding: 6px 18px; border-radius: 14px; border: none;
+            background: var(--accent); color: #fff;
+            font-size: 12px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .download-btn:hover { background: var(--accent-hover); transform: scale(1.05); }
+
+        .no-results {
+            text-align: center; padding: 60px 20px; color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 20px; max-width: 1280px; margin: 0 auto;
+        }
+        .footer-top {
+            display: flex; align-items: center; gap: 20px; margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .footer-logo { font-size: 18px; font-weight: 900; color: var(--accent); }
+        .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-lang {
+            margin-left: auto;
+            padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border);
+            background: none; color: var(--text-secondary); font-size: 12px; cursor: pointer;
+        }
+        .footer-disclaimer {
+            font-size: 11px; color: var(--text-muted); line-height: 1.5; max-width: 800px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .page-content { padding: 16px 12px; }
+            .games-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .search-input { min-width: unset; }
+        }
+        @media (max-width: 480px) {
+            .header { padding: 0 12px; }
+            .header-logo { font-size: 16px; }
+            .game-card-icon { width: 64px; height: 64px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <a href="index.html" class="header-logo">
+        
+        EROVIBE
+    </a>
+    <nav>
+        <ul class="header-nav">
+            <li><a href="games.html" class="active">Games</a></li>
+            <li><a href="news_list.html">News</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="forum_list.html">Forum</a></li>
+        </ul>
+    </nav>
+    <div class="header-right">
+        <div class="hamburger" onclick="document.getElementById('mobileNav').style.display=document.getElementById('mobileNav').style.display==='flex'?'none':'flex'">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Nav -->
+<div id="mobileNav" style="display:none;position:fixed;top:50px;left:0;right:0;z-index:999;background:#1a1a2e;border-bottom:1px solid #2a2a3e;flex-direction:column;padding:12px 20px;gap:12px;">
+    <a href="games.html" style="color:#e91e63;font-size:14px;font-weight:600;">Games</a>
+    <a href="news_list.html" style="color:#888;font-size:14px;font-weight:600;">News</a>
+    <a href="events.html" style="color:#888;font-size:14px;font-weight:600;">Events</a>
+    <a href="forum_list.html" style="color:#888;font-size:14px;font-weight:600;">Forum</a>
+</div>
+
+<!-- Page Content -->
+<div class="page-content">
+    <h1 class="page-title">All Games</h1>
+
+    <div class="filter-bar">
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterGames('all', this)">All</button>
+            <button class="filter-tab" onclick="filterGames('online', this)">Online</button>
+            <button class="filter-tab" onclick="filterGames('single', this)">Single-Player</button>
+        </div>
+        <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search games..." oninput="searchGames()">
+    </div>
+
+    <div class="games-grid" id="gamesGrid"></div>
+    <div class="no-results" id="noResults" style="display:none;">No games found matching your search.</div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-top">
+        <div class="footer-logo">EROVIBE</div>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Support</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <select class="footer-lang" onchange="alert('Coming soon!')">
+            <option>English</option>
+            <option>日本語</option>
+            <option>中文</option>
+            <option>한국어</option>
+        </select>
+    </div>
+    <p class="footer-disclaimer">
+        © 2026 EROVIBE. All rights reserved. All games are property of their respective developers.<br>
+        This website contains age-restricted content. You must be 18+ to access. All characters depicted are 18 years of age or older.
+    </p>
+</footer>
+
+<script>
+const onlineGames = [
+    { name: "NU: Carnival", img: "img/1645670561656.png", badge: "hot", tags: ["RPG","Male Leads","Anime"], genre: "Strategy RPG", pref: "male" },
+    { name: "Throne of Desire", img: "img/1771925977488.jpg", badge: "hot", tags: ["Strategy","Female Leads"], genre: "Fantasy Strategy", pref: "female" },
+    { name: "Ark Re:Code", img: "img/1772605111946.jpg", badge: "new", tags: ["Action","Sci-Fi"], genre: "Action RPG", pref: "varied" },
+    { name: "Cherry Tale", img: "img/1771380594955.jpg", badge: "new", tags: ["RPG","Romance"], genre: "Story RPG", pref: "female" },
+    { name: "Rise of Eros", img: "img/1771902607202.jpg", badge: "hot", tags: ["Strategy","Female Leads"], genre: "Strategy RPG", pref: "female" },
+    { name: "TenkafuMA: Diablo's Harem", img: "img/1770179739961.jpg", badge: "hot", tags: ["Action","Harem"], genre: "Action RPG", pref: "male" },
+    { name: "Queen of Stars", img: "img/1764213033918.jpg", badge: "hot", tags: ["Gacha","Sci-Fi"], genre: "Idle RPG", pref: "female" },
+    { name: "Lusty Legends", img: "img/1770201227194.jpg", badge: "hot", tags: ["RPG","Fantasy"], genre: "RPG", pref: "varied" },
+    { name: "Megaha:Re", img: "img/1763104864296.jpg", badge: "hot", tags: ["Action","Female Leads"], genre: "Action RPG", pref: "female" },
+    { name: "Zerowake GATES", img: "img/1764227965198.jpg", badge: "hot", tags: ["Sci-Fi","Strategy"], genre: "Strategy", pref: "varied" },
+    { name: "Lust Goddess", img: "img/1730174010099.png", badge: "hot", tags: ["Strategy","Female Leads"], genre: "Online Strategy", pref: "female" },
+    { name: "What in Hell is Bad", img: "img/1696323609913.png", badge: "hot", tags: ["Dating Sim","Otome"], genre: "Visual Novel", pref: "female" },
+    { name: "Star Lusts", img: "img/1770621139310.jpg", badge: "new", tags: ["Sci-Fi","Romance"], genre: "Sci-Fi RPG", pref: "varied" },
+    { name: "Horizon Walker", img: "img/1770860608637.jpg", badge: "new", tags: ["Adventure","Fantasy"], genre: "Adventure RPG", pref: "male" },
+    { name: "IDOL SEX", img: "img/1724745101545.jpg", badge: "hot", tags: ["Idol","Simulation"], genre: "Simulation", pref: "male" },
+    { name: "IDOL SEX CBT", img: "img/1762164644872.jpg", badge: "new", tags: ["Idol","Adult"], genre: "Simulation", pref: "male" },
+    { name: "SexTherapistNick", img: "img/1753776667222.jpg", badge: "hot", tags: ["Simulation","Story"], genre: "Visual Novel", pref: "varied" },
+    { name: "Demoninspector", img: "img/1766571971977.jpg", badge: "hot", tags: ["Dark","Action"], genre: "Action RPG", pref: "varied" },
+    { name: "Passion Industry", img: "img/1768472621755.jpg", badge: "hot", tags: ["Simulation","Adult"], genre: "Simulation", pref: "varied" },
+    { name: "Ero Dorado", img: "img/1757327645504.jpg", badge: "hot", tags: ["Adventure","Female Leads"], genre: "Adventure", pref: "female" },
+    { name: "Legend of Daughterland", img: "img/1735900748918.jpg", badge: "hot", tags: ["RPG","Fantasy"], genre: "Fantasy RPG", pref: "male" },
+    { name: "The Emperor", img: "img/1769677524820.jpg", badge: "hot", tags: ["Strategy","Male Leads"], genre: "Strategy", pref: "male" },
+];
+
+const singleGames = [
+    { name: "My Part-Time Job With a Flirty Mistress", img: "img/1770259912430.png", badge: "new", tags: ["Visual Novel","NEW","10% Off"], genre: "Visual Novel", pref: "male" },
+    { name: "Norn's Dine", img: "img/1754470120914.jpg", badge: "hot", tags: ["Dating Sim","Cozy"], genre: "Dating Sim", pref: "female" },
+    { name: "Succubus Kiss", img: "img/1733473659104.jpg", badge: "hot", tags: ["Horror","Romance"], genre: "Horror VN", pref: "male" },
+    { name: "MILF Conditioning", img: "img/1711087549194.jpg", badge: "hot", tags: ["Simulation","Adult"], genre: "Simulation", pref: "male" },
+    { name: "Idol Correction Chronicles", img: "img/1756277630916.png", badge: "hot", tags: ["Visual Novel","School"], genre: "Visual Novel", pref: "male" },
+    { name: "Sickly Days and Summer Traces", img: "img/1768962521596.jpg", badge: "new", tags: ["Romance","Slice of Life","10% Off"], genre: "VN", pref: "varied" },
+    { name: "The Daily Life of Serving Doll", img: "img/1756893854101.jpg", badge: "hot", tags: ["Fantasy","Unique"], genre: "Fantasy VN", pref: "male" },
+    { name: "Girl in a Box", img: "img/1746605345362.jpg", badge: "hot", tags: ["Comedy","Adult"], genre: "Comedy VN", pref: "male" },
+    { name: "The Neighboring Streamer", img: "img/1753326581845.jpg", badge: "hot", tags: ["Slice of Life","Romance"], genre: "Slice of Life", pref: "male" },
+    { name: "Breeding Frenzy!", img: "img/1753776667222.jpg", badge: "hot", tags: ["Casual","Unique"], genre: "Casual", pref: "male" },
+    { name: "Succubus Heaven", img: "img/1762164644872.jpg", badge: "hot", tags: ["Dark","Fantasy","RPG"], genre: "RPG", pref: "male" },
+];
+
+// Mark type
+onlineGames.forEach(g => g.type = 'online');
+singleGames.forEach(g => g.type = 'single');
+const allGames = [...onlineGames, ...singleGames];
+
+let currentFilter = 'all';
+
+function filterGames(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderGames();
+}
+
+function searchGames() {
+    renderGames();
+}
+
+function renderGames() {
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    let games = currentFilter === 'all' ? allGames :
+                currentFilter === 'online' ? onlineGames : singleGames;
+
+    if (query) {
+        games = games.filter(g => g.name.toLowerCase().includes(query) || g.genre.toLowerCase().includes(query) || g.tags.some(t => t.toLowerCase().includes(query)));
+    }
+
+    const grid = document.getElementById('gamesGrid');
+    const noRes = document.getElementById('noResults');
+
+    if (games.length === 0) {
+        grid.innerHTML = '';
+        noRes.style.display = 'block';
+        return;
+    }
+    noRes.style.display = 'none';
+
+    grid.innerHTML = games.map((g, idx) => {
+        const globalIdx = allGames.indexOf(g);
+        return `
+        <div class="game-card" onclick="window.location.href='game.html?id=${globalIdx}'">
+            <div class="game-card-icon">
+                <img src="${g.img}" alt="${g.name}" loading="lazy">
+            </div>
+            <div class="game-card-info">
+                <div class="game-card-name">${g.name}</div>
+                <div class="game-card-genre">${g.genre} · ${g.type === 'online' ? 'Online' : 'Single-Player'}</div>
+                <div class="game-card-tags">
+                    ${g.tags.filter(t => t !== 'NEW' && !t.includes('Off')).map(t => `<span class="game-tag">${t}</span>`).join('')}
+                </div>
+                <button class="download-btn" onclick="event.stopPropagation();window.location.href='ErovibeSetup.msi'">Download</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+renderGames();
+</script>
+</body>
+</html>

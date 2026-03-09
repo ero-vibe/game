@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>EROVIBE | News</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d0d1a;
+            --bg-secondary: #12121e;
+            --bg-card: #1a1a2e;
+            --accent: #e91e63;
+            --accent-hover: #f50057;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --text-muted: #666;
+            --border: #2a2a3e;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: #1a1a2e; height: 50px;
+            display: flex; align-items: center; padding: 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-logo {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 18px; font-weight: 900; color: var(--accent);
+            flex-shrink: 0; margin-right: auto;
+        }
+        .header-logo img { height: 28px; border-radius: 4px; }
+        .header-nav {
+            display: flex; gap: 24px; list-style: none;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+        .header-nav a {
+            color: var(--text-secondary); font-size: 13px; font-weight: 500;
+            transition: color 0.2s; white-space: nowrap;
+        }
+        .header-nav a:hover, .header-nav a.active { color: #fff; }
+        .header-right {
+            display: flex; align-items: center; gap: 12px;
+            margin-left: auto; flex-shrink: 0;
+        }
+        .header-icon {
+            width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); cursor: pointer; font-size: 16px;
+            border-radius: 4px; transition: color 0.2s;
+        }
+        .header-icon:hover { color: #fff; }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 18px; height: 2px; background: var(--text-secondary); border-radius: 1px; }
+        .hamburger:hover span { background: #fff; }
+
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 20px; max-width: 1280px; margin: 0 auto;
+        }
+        .footer-top {
+            display: flex; align-items: center; gap: 20px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .footer-logo { font-size: 18px; font-weight: 900; color: var(--accent); }
+        .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-lang {
+            margin-left: auto; padding: 4px 10px; border-radius: 4px;
+            border: 1px solid var(--border); background: none;
+            color: var(--text-secondary); font-size: 12px; cursor: pointer;
+        }
+        .footer-disclaimer { font-size: 11px; color: var(--text-muted); line-height: 1.5; max-width: 800px; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        .page-content {
+            max-width: 900px; margin: 70px auto 0; padding: 20px;
+        }
+        .breadcrumb {
+            font-size: 12px; color: var(--text-secondary); margin-bottom: 20px;
+        }
+        .breadcrumb a { color: var(--text-secondary); transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--accent); }
+        .breadcrumb span { color: var(--text-muted); margin: 0 6px; }
+
+        .news-hero-img {
+            width: 100%; aspect-ratio: 16/8; border-radius: 12px;
+            overflow: hidden; margin-bottom: 20px; background: var(--bg-card);
+        }
+        .news-hero-img img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+
+        .news-meta {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .news-game-tag {
+            padding: 4px 12px; border-radius: 20px; font-size: 11px;
+            font-weight: 700; background: var(--accent); color: #fff;
+        }
+        .news-date-text { font-size: 13px; color: var(--text-secondary); }
+        .news-category { font-size: 12px; color: var(--text-muted); }
+
+        .news-title-text {
+            font-size: 28px; font-weight: 900; margin-bottom: 20px; line-height: 1.3;
+        }
+
+        .news-body-text {
+            font-size: 14px; color: var(--text-secondary); line-height: 1.8;
+            margin-bottom: 32px;
+        }
+        .news-body-text p { margin-bottom: 14px; }
+
+        .read-more-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 24px; border-radius: 8px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--accent); font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .read-more-btn:hover { border-color: var(--accent); background: rgba(233,30,99,0.1); }
+
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .news-title-text { font-size: 22px; }
+        }
+        @media (max-width: 480px) {
+            .header { padding: 0 12px; }
+            .header-logo { font-size: 16px; }
+            .page-content { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="index.html" class="header-logo">
+        
+        EROVIBE
+    </a>
+    <nav>
+        <ul class="header-nav">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="news_list.html" class="active">News</a></li>
+            <li><a href="events.html">Limited-time Events</a></li>
+            <li><a href="forum_list.html">Forum</a></li>
+        </ul>
+    </nav>
+    <div class="header-right">
+        <div class="header-icon" title="Language">🌐</div>
+        <div class="hamburger" onclick="alert('Coming soon!')">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
+
+<div class="page-content" id="pageContent"></div>
+
+<footer class="footer">
+    <div class="footer-top">
+        <div class="footer-logo">EROVIBE</div>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Support</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Advertise</a>
+            <a href="forum_list.html">Forum</a>
+        </div>
+        <select class="footer-lang" onchange="alert('Coming soon!')">
+            <option>English</option>
+            <option>日本語</option>
+            <option>中文</option>
+            <option>한국어</option>
+        </select>
+    </div>
+    <p class="footer-disclaimer">
+        © 2026 EROVIBE. All rights reserved. All games are property of their respective developers.<br>
+        This website contains age-restricted content. You must be 18+ to access. All characters depicted are 18 years of age or older.
+    </p>
+</footer>
+
+<script>
+const onlineGames = [
+    { name: "NU: Carnival", img: "img/1645670561656.png" },
+    { name: "Throne of Desire", img: "img/1771925977488.jpg" },
+    { name: "Ark Re:Code", img: "img/1772605111946.jpg" },
+    { name: "Cherry Tale", img: "img/1771380594955.jpg" },
+    { name: "Rise of Eros", img: "img/1771902607202.jpg" },
+    { name: "TenkafuMA: Diablo's Harem", img: "img/1770179739961.jpg" },
+    { name: "Queen of Stars", img: "img/1764213033918.jpg" },
+    { name: "Lusty Legends", img: "img/1770201227194.jpg" },
+    { name: "Megaha:Re", img: "img/1763104864296.jpg" },
+    { name: "Zerowake GATES", img: "img/1764227965198.jpg" },
+    { name: "Lust Goddess", img: "img/1730174010099.png" },
+    { name: "What in Hell is Bad", img: "img/1696323609913.png" },
+    { name: "Star Lusts", img: "img/1770621139310.jpg" },
+    { name: "Horizon Walker", img: "img/1770860608637.jpg" },
+    { name: "IDOL SEX", img: "img/1724745101545.jpg" },
+    { name: "IDOL SEX CBT", img: "img/1762164644872.jpg" },
+    { name: "SexTherapistNick", img: "img/1753776667222.jpg" },
+    { name: "Demoninspector", img: "img/1766571971977.jpg" },
+    { name: "Passion Industry", img: "img/1768472621755.jpg" },
+    { name: "Ero Dorado", img: "img/1757327645504.jpg" },
+    { name: "Legend of Daughterland", img: "img/1735900748918.jpg" },
+    { name: "The Emperor", img: "img/1769677524820.jpg" },
+];
+
+const singleGames = [
+    { name: "My Part-Time Job With a Flirty Mistress", img: "img/1770259912430.png" },
+    { name: "Norn's Dine", img: "img/1754470120914.jpg" },
+    { name: "Succubus Kiss", img: "img/1733473659104.jpg" },
+    { name: "MILF Conditioning", img: "img/1711087549194.jpg" },
+    { name: "Idol Correction Chronicles", img: "img/1756277630916.png" },
+    { name: "Sickly Days and Summer Traces", img: "img/1768962521596.jpg" },
+    { name: "The Daily Life of Serving Doll", img: "img/1756893854101.jpg" },
+    { name: "Girl in a Box", img: "img/1746605345362.jpg" },
+    { name: "The Neighboring Streamer", img: "img/1753326581845.jpg" },
+    { name: "Breeding Frenzy!", img: "img/1753776667222.jpg" },
+    { name: "Succubus Heaven", img: "img/1762164644872.jpg" },
+];
+
+const allGames = [...onlineGames, ...singleGames];
+
+// id 0-2: headline news, id 3-10: news list
+const allNews = [
+    {
+        id: 0,
+        title: "Ark Re:Code Launches with Record-Breaking Day 1 Downloads",
+        img: "img/news_headline_1.jpg",
+        game: "Ark Re:Code",
+        gameId: 2,
+        date: "Mar 8, 2026",
+        category: "New Release",
+        body: `<p>Ark Re:Code has shattered expectations with an incredible first-day launch that saw over 2 million downloads across all platforms. The highly anticipated action RPG from studio NexGen Games arrived with polished gameplay, stunning visuals, and a surprisingly generous free-to-play model that has critics and players alike singing its praises.</p>
+<p>The game's cyberpunk setting and fluid combat system have drawn favorable comparisons to console-quality titles, with many reviewers noting the exceptional attention to detail in both character animations and environmental design. The gacha system has also been praised for its fair rates and pity system that guarantees top-tier characters.</p>
+<p>Server capacity was temporarily strained during the launch window, but the development team responded swiftly with additional servers and compensation packages for affected players. The rapid response earned additional goodwill from the community, which has grown to over 500,000 members on social media.</p>
+<p>Looking ahead, the developers have already announced a roadmap for the first three months of content, including two major story updates, a PvP arena system, and a collaboration event with a yet-to-be-revealed franchise. With this strong start, Ark Re:Code is positioned to become one of the defining titles of 2026.</p>
+<p>Industry analysts predict the game could reach 10 million downloads within its first month, making it one of the fastest-growing titles in the adult gaming market this year.</p>`
+    },
+    {
+        id: 1,
+        title: "Rise of Eros Stays #1 for 3rd Consecutive Month",
+        img: "img/news_headline_2.jpg",
+        game: "Rise of Eros",
+        gameId: 4,
+        date: "Mar 7, 2026",
+        category: "Rankings",
+        body: `<p>Rise of Eros continues its dominant run at the top of the charts, maintaining the #1 position in adult gaming rankings for an unprecedented third consecutive month. The strategy RPG has shown remarkable staying power thanks to consistent content updates and a deeply engaged community.</p>
+<p>The latest Season 4 update introduced sweeping balance changes to the PvP meta, keeping competitive play fresh and exciting. New hero abilities and team compositions have emerged, creating the most diverse competitive landscape the game has seen since launch.</p>
+<p>Revenue figures show a 15% increase month-over-month, driven by the introduction of new limited-edition characters and a revamped battle pass system that offers better value for both free and premium players. The game's generous approach to monetization has been cited as a key factor in its sustained popularity.</p>
+<p>The development team has announced plans for a major anniversary celebration next month, featuring exclusive events, giveaways, and a special collaboration that has fans speculating wildly on social media. Community engagement metrics show Rise of Eros maintains one of the most active player bases in the genre.</p>
+<p>With competition heating up from new releases, the Rise of Eros team shows no signs of slowing down. Their commitment to quality updates and community communication continues to set the standard for live-service adult games.</p>`
+    },
+    {
+        id: 2,
+        title: "Cherry Tale Valentine's Limited Hero \"Cupid\" Debuts!",
+        img: "img/news_headline_3.jpg",
+        game: "Cherry Tale",
+        gameId: 3,
+        date: "Mar 6, 2026",
+        category: "Update",
+        body: `<p>Cherry Tale has unveiled its most anticipated character yet — "Cupid," a limited Valentine's hero with a unique dual-class system that allows players to switch between support and DPS roles mid-battle. The character's stunning design and versatile gameplay have already made them the most pulled hero in the game's history.</p>
+<p>The Valentine's event accompanying Cupid's release features a romantic storyline that explores themes of love, sacrifice, and destiny. Players navigate through branching narrative paths that lead to six different endings, each unlocking exclusive rewards and CG illustrations.</p>
+<p>The gacha rates for Cupid have been set at a generous 1.5% base rate with a guaranteed pull at 80 summons, marking the most player-friendly banner Cherry Tale has offered to date. The development team stated this was their way of thanking the community for their continued support.</p>
+<p>In addition to Cupid, the update brings new story chapters advancing the main narrative, quality-of-life improvements including auto-battle enhancements, and a revamped guild system with cooperative boss raids. The patch has been received overwhelmingly positively by the community.</p>
+<p>Cherry Tale's consistent quality updates have helped it grow from a niche title to one of the top-performing story RPGs in the market. The team has hinted at even bigger announcements coming at the game's first anniversary celebration next month.</p>`
+    },
+    {
+        id: 3,
+        title: "NU: Carnival announces Season 3 collaboration event",
+        img: "img/1645670561656.png",
+        game: "NU: Carnival",
+        gameId: 0,
+        date: "Mar 8, 2026",
+        category: "Events",
+        body: `<p>NU: Carnival has officially announced its highly anticipated Season 3 collaboration event, set to launch in early April. While the collaboration partner remains under wraps, teasers released on social media have sent the community into a frenzy of speculation, with fans analyzing every pixel of the cryptic promotional artwork.</p>
+<p>The Season 3 event will introduce a new gacha banner featuring collaboration-exclusive characters with unique ability sets not found in the base game. These limited characters will be available only during the event period, creating urgency among collectors and competitive players alike.</p>
+<p>In addition to the new characters, the collaboration event will feature a special story campaign that blends the worlds of both franchises. The development team has promised fully voiced dialogue, animated cutscenes, and meaningful narrative choices that impact the event's outcome.</p>
+<p>Pre-registration for the event is now open, with milestone rewards unlocked as more players sign up. Early registrants will receive an exclusive profile frame and premium currency bonus when the event launches.</p>
+<p>NU: Carnival's previous collaboration events have been among the game's highest-grossing periods, and expectations are high that Season 3 will set new records for player engagement and revenue.</p>`
+    },
+    {
+        id: 4,
+        title: "Rise of Eros PvP Season 4 kicks off with new meta",
+        img: "img/1771902607202.jpg",
+        game: "Rise of Eros",
+        gameId: 4,
+        date: "Mar 7, 2026",
+        category: "PvP",
+        body: `<p>Rise of Eros PvP Season 4 is officially underway, bringing the most significant competitive balance changes since the game's launch. The development team has overhauled several hero abilities, adjusted speed calculations, and introduced new team synergy bonuses that reward creative team building.</p>
+<p>The previously dominant "Burst Rush" meta has been effectively countered with new defensive options, opening up space for control-oriented and attrition-based strategies. Early ladder results show a much more diverse spread of team compositions reaching the top ranks.</p>
+<p>New hero abilities include a "Taunt" mechanic for tanks that forces enemies to target them, a "Cleanse" ability for supports that removes crowd control effects, and enhanced passive abilities for several underused DPS characters. These changes aim to make every hero viable in competitive play.</p>
+<p>Season 4 rewards include exclusive cosmetics, premium currency, and a new tier of competitive equipment only obtainable through PvP ranking rewards. The top 1% of players will receive a legendary animated portrait border that displays their peak rank.</p>
+<p>Community tournaments organized by fan groups have already begun adapting to the new meta, with several major events planned throughout the season. The competitive scene continues to grow, with prize pools increasing each season.</p>`
+    },
+    {
+        id: 5,
+        title: "TenkafuMA announces major collab event for April",
+        img: "img/1770179739961.jpg",
+        game: "TenkafuMA: Diablo's Harem",
+        gameId: 5,
+        date: "Mar 7, 2026",
+        category: "Collaboration",
+        body: `<p>TenkafuMA: Diablo's Harem has confirmed a major collaboration event launching in April that will bring fan-favorite characters from an iconic franchise into the game's world. The announcement trailer, which debuted at a livestream event, showcased stunning character designs and teased new gameplay mechanics exclusive to the collaboration.</p>
+<p>The collaboration characters will feature unique "Fusion Forms" that combine the visual elements and abilities of both franchises, creating entirely new playstyles. Each character will have a dedicated story chapter explaining their arrival in the TenkafuMA universe.</p>
+<p>The event will also introduce a new co-op game mode called "Dimensional Rift" where players team up to battle collaboration-exclusive boss enemies. These encounters are designed for four-player parties and will require coordination between different character roles.</p>
+<p>A special login campaign running throughout the event period will give players free summons daily, with bonus rewards for consecutive logins. The collaboration banner will feature a step-up summon system with guaranteed collaboration character pulls at certain milestones.</p>
+<p>TenkafuMA's collaboration events are known for their production quality, and early impressions from content creators who received preview access suggest this will be the game's most impressive event to date.</p>`
+    },
+    {
+        id: 6,
+        title: "My Part-Time Job update adds new story chapters",
+        img: "img/1770259912430.png",
+        game: "My Part-Time Job With a Flirty Mistress",
+        gameId: 22,
+        date: "Mar 6, 2026",
+        category: "Update",
+        body: `<p>My Part-Time Job With a Flirty Mistress has received its biggest content update yet, adding three new story chapters that significantly expand the romance routes and introduce previously hidden endings. The update also includes new CG illustrations, revised dialogue options, and quality-of-life improvements based on community feedback.</p>
+<p>The new chapters explore deeper aspects of the protagonist's relationships, with branching paths that lead to dramatically different outcomes. Players who thought they had seen everything will discover new scenes and dialogue options that reveal hidden depths to familiar characters.</p>
+<p>The three new endings bring the total to twelve, making this one of the most replayable visual novels in its category. Each ending features unique CG artwork and an epilogue that provides closure to different narrative threads.</p>
+<p>Technical improvements include faster load times, improved save management with more slots, and a new gallery mode that tracks completion progress across all routes. The UI has also been refined based on accessibility feedback from the community.</p>
+<p>The update is available now at no additional cost to existing owners. New players can take advantage of the current 10% launch discount, which the developer has confirmed will remain active for another two weeks.</p>`
+    },
+    {
+        id: 7,
+        title: "Ark Re:Code surpasses 1M downloads in first week",
+        img: "img/1772605111946.jpg",
+        game: "Ark Re:Code",
+        gameId: 2,
+        date: "Mar 6, 2026",
+        category: "Milestone",
+        body: `<p>Just seven days after launch, Ark Re:Code has crossed the 1 million download milestone, establishing itself as the fastest-growing new release in the adult gaming market this year. The achievement is particularly impressive given the competitive landscape, with several major titles launching in the same window.</p>
+<p>Player retention metrics are equally strong, with the game reporting a 68% day-7 retention rate — well above the industry average of 25-35% for free-to-play titles. The development team attributes this success to the game's rewarding progression system and generous daily content.</p>
+<p>To celebrate the milestone, the team has announced a special reward package for all players including premium currency, rare upgrade materials, and a commemorative title. Additional celebratory events will roll out throughout the month.</p>
+<p>The community has been particularly vocal about the game's fair monetization model, with many players praising the ability to enjoy high-level content without excessive spending. The game's competitive modes are accessible to free-to-play players, which has helped build a large and diverse player base.</p>
+<p>Looking forward, the team has accelerated their content roadmap, with the first major story update now scheduled two weeks earlier than originally planned to keep pace with player demand for new content.</p>`
+    },
+    {
+        id: 8,
+        title: "Queen of Stars introduces guild raid system",
+        img: "img/1764213033918.jpg",
+        game: "Queen of Stars",
+        gameId: 6,
+        date: "Mar 5, 2026",
+        category: "Feature",
+        body: `<p>Queen of Stars has launched its most requested feature — the guild raid system. This cooperative endgame content allows guild members to take on massive boss encounters together, pooling their best characters and strategies to overcome challenges that no individual player could face alone.</p>
+<p>The raid system features three difficulty tiers (Normal, Hard, and Mythic), with each tier offering progressively better rewards and more complex boss mechanics. Mythic-tier raids require coordinated team compositions and precise timing, creating the most challenging content the game has ever offered.</p>
+<p>Each raid boss has unique abilities and phase transitions that keep encounters feeling fresh and unpredictable. The development team worked with competitive players during the testing phase to ensure encounters are challenging but fair.</p>
+<p>Guild rankings based on raid performance unlock additional rewards and bragging rights, with the top guilds receiving exclusive cosmetics and titles. A new guild management interface makes it easier to coordinate raid schedules and assign roles to members.</p>
+<p>The update also includes quality-of-life improvements for guilds, including a redesigned chat system, event calendar integration, and automated attendance tracking for raid participation.</p>`
+    },
+    {
+        id: 9,
+        title: "Sickly Days and Summer Traces gets 10% launch discount",
+        img: "img/1768962521596.jpg",
+        game: "Sickly Days and Summer Traces",
+        gameId: 27,
+        date: "Mar 5, 2026",
+        category: "Launch",
+        body: `<p>Sickly Days and Summer Traces has officially launched with a special 10% introductory discount, inviting players into its poignant world of summer romance and emotional storytelling. The visual novel has already received glowing reviews from early players who praise its nuanced writing and atmospheric presentation.</p>
+<p>Set in a quiet countryside town during a sweltering summer, the story follows a deeply personal romance that unfolds against themes of illness, impermanence, and the desire to make every moment count. The game's writing avoids melodrama in favor of subtle, realistic emotional beats that resonate on a deeply human level.</p>
+<p>The art direction has been specifically highlighted by reviewers, with hand-painted backgrounds that capture the golden quality of summer light and character expressions that convey complex emotions without words. The original soundtrack features acoustic guitar and piano compositions that perfectly complement the pastoral setting.</p>
+<p>Multiple playthrough paths offer different perspectives on the central relationship, with each route revealing new information about the characters and their circumstances. The total playtime across all routes is estimated at 15-20 hours.</p>
+<p>The launch discount will be available for a limited time. The development team has also announced plans for a free content update later this year that will add an epilogue chapter and bonus stories for supporting characters.</p>`
+    },
+    {
+        id: 10,
+        title: "Lust Goddess v3.5 patch notes revealed",
+        img: "img/1730174010099.png",
+        game: "Lust Goddess",
+        gameId: 10,
+        date: "Mar 4, 2026",
+        category: "Patch Notes",
+        body: `<p>The v3.5 update for Lust Goddess is set to be one of the game's biggest patches yet, introducing a new island exploration system, three new playable characters, and comprehensive PvP rebalancing. The patch notes, released today, detail dozens of changes that touch nearly every aspect of the game.</p>
+<p>The new island exploration feature opens up a previously inaccessible region of the game world, filled with unique enemies, hidden treasures, and environmental puzzles. Players can explore at their own pace, discovering secrets and earning exclusive resources not available elsewhere.</p>
+<p>Three new characters join the roster, each bringing unique abilities and synergies with existing team compositions. The characters were designed based on community surveys, incorporating the most-requested archetypes and visual designs.</p>
+<p>PvP changes include adjustments to several dominant characters, new matchmaking improvements, and a revamped ranking system with more granular tiers. The development team has stated their goal is to make every character competitively viable within the next two major patches.</p>
+<p>Additional quality-of-life improvements include auto-repeat for farming stages, an enhanced equipment filter system, and new notification settings that give players more control over alerts. The update is scheduled to go live next Tuesday with a maintenance window of approximately 4 hours.</p>`
+    }
+];
+
+function init() {
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get('id'));
+    const content = document.getElementById('pageContent');
+
+    const news = allNews.find(n => n.id === id);
+    if (!news) {
+        content.innerHTML = '<div style="text-align:center;padding:60px 20px;"><h2>News article not found</h2><p style="color:var(--text-secondary);margin-top:12px;"><a href="news_list.html" style="color:var(--accent);">View all news</a></p></div>';
+        return;
+    }
+
+    document.title = `EROVIBE | ${news.title}`;
+
+    content.innerHTML = `
+        <div class="breadcrumb">
+            <a href="index.html">Home</a><span>›</span>
+            <a href="news_list.html">News</a><span>›</span>
+            ${news.title.substring(0, 40)}...
+        </div>
+
+        <div class="news-hero-img">
+            <img src="${news.img}" alt="${news.title}">
+        </div>
+
+        <div class="news-meta">
+            <span class="news-game-tag">${news.game}</span>
+            <span class="news-date-text">${news.date}</span>
+            <span class="news-category">· ${news.category}</span>
+        </div>
+
+        <h1 class="news-title-text">${news.title}</h1>
+
+        <div class="news-body-text">${news.body}</div>
+
+        <a href="game.html?id=${news.gameId}" class="read-more-btn">
+            🎮 Play ${news.game} →
+        </a>
+    `;
+}
+
+init();
+</script>
+</body>
+</html>

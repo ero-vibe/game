@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://erovibe.com/sitemap.xml
+
+# Block internal assets from indexing
+Disallow: /ErovibeSetup.msi
+Disallow: /ErovibeApp/
+Disallow: /dashboard/

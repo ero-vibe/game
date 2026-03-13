@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>EROVIBE | Collab Store</title>
+    <meta name="description" content="EROVIBE Collab Store — exclusive merchandise, collectibles and collaborations from your favorite adult games. Coming soon!">
+    <meta property="og:title" content="EROVIBE | Collab Store">
+    <meta property="og:description" content="EROVIBE Collab Store — exclusive merchandise, collectibles and collaborations from your favorite adult games. Coming soon!">
+    <meta property="og:image" content="img/1771902607202.jpg">
+    <meta property="og:url" content="https://erovibe.com/collab_store.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="EROVIBE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EROVIBE | Collab Store">
+    <meta name="twitter:description" content="EROVIBE Collab Store — exclusive merchandise, collectibles and collaborations from your favorite adult games. Coming soon!">
+    <link rel="canonical" href="https://erovibe.com/collab_store.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0d0d1a;
+            --bg-secondary: #12121e;
+            --bg-card: #1a1a2e;
+            --accent: #e91e63;
+            --accent-hover: #f50057;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --text-muted: #666;
+            --border: #2a2a3e;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        /* Header */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(13,13,26,0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 20px; height: 50px;
+        }
+        .header-logo {
+            font-size: 18px; font-weight: 900; color: var(--accent);
+            cursor: pointer;
+        }
+        .header-logo a { color: var(--accent); }
+        .header-nav {
+            display: flex; gap: 20px; list-style: none; margin-left: 30px;
+        }
+        .header-nav a {
+            font-size: 13px; font-weight: 600; color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+        .header-nav a:hover, .header-nav a.active { color: #fff; }
+        .header-right {
+            margin-left: auto; display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+        }
+        .header-icon { font-size: 16px; cursor: pointer; color: var(--text-secondary); }
+        .header-icon:hover { color: #fff; }
+        .hamburger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 18px; height: 2px; background: var(--text-secondary); border-radius: 1px; transition: background 0.2s; }
+        .hamburger:hover span { background: #fff; }
+
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+        }
+
+        /* Page Content */
+        .page-content {
+            margin-top: 50px; max-width: 1280px; margin-left: auto; margin-right: auto;
+            padding: 40px 20px; text-align: center;
+        }
+        .store-hero {
+            margin-bottom: 48px;
+        }
+        .store-hero h1 {
+            font-size: 36px; font-weight: 900; margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent), #ff6090);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .store-hero p {
+            font-size: 16px; color: var(--text-secondary); max-width: 500px; margin: 0 auto 24px;
+            line-height: 1.6;
+        }
+        .store-badge {
+            display: inline-block; padding: 6px 18px; border-radius: 20px;
+            background: rgba(233,30,99,0.15); color: var(--accent);
+            font-size: 13px; font-weight: 700; letter-spacing: 1px;
+        }
+
+        /* Placeholder Grid */
+        .store-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px; margin-bottom: 48px;
+        }
+        .store-item {
+            background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);
+            overflow: hidden; transition: transform 0.2s, border-color 0.2s;
+        }
+        .store-item:hover {
+            transform: translateY(-2px); border-color: var(--accent);
+        }
+        .store-item-img {
+            width: 100%; aspect-ratio: 1; background: var(--bg-secondary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px; color: var(--text-muted);
+        }
+        .store-item-info {
+            padding: 14px;
+        }
+        .store-item-name {
+            font-size: 14px; font-weight: 700; margin-bottom: 6px;
+            background: linear-gradient(90deg, #333, #555, #333);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 4px; height: 16px;
+        }
+        .store-item-price {
+            background: linear-gradient(90deg, #333, #555, #333);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 4px; height: 12px; width: 60%;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Notify Section */
+        .notify-section {
+            max-width: 420px; margin: 0 auto;
+        }
+        .notify-section h3 {
+            font-size: 18px; font-weight: 800; margin-bottom: 12px;
+        }
+        .notify-section p {
+            font-size: 13px; color: var(--text-secondary); margin-bottom: 20px;
+        }
+        .notify-form {
+            display: flex; gap: 10px;
+        }
+        .notify-input {
+            flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg-card); color: #fff; font-size: 14px;
+            outline: none; transition: border-color 0.2s;
+        }
+        .notify-input:focus { border-color: var(--accent); }
+        .notify-input::placeholder { color: var(--text-muted); }
+        .notify-btn {
+            padding: 10px 24px; border-radius: 8px; border: none;
+            background: var(--accent); color: #fff; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .notify-btn:hover { background: var(--accent-hover); }
+        .notify-success {
+            display: none; padding: 12px; border-radius: 8px;
+            background: rgba(76,175,80,0.15); color: #4caf50;
+            font-size: 14px; font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 20px; max-width: 1280px; margin: 0 auto;
+        }
+        .footer-top {
+            display: flex; align-items: center; gap: 20px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .footer-logo { font-size: 18px; font-weight: 900; color: var(--accent); }
+        .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-secondary); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-lang {
+            margin-left: auto;
+            padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border);
+            background: none; color: var(--text-secondary); font-size: 12px;
+            cursor: pointer;
+        }
+        .footer-disclaimer { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: var(--bg-card); color: var(--text-primary); padding: 10px 20px;
+            border-radius: 8px; border: 1px solid var(--border); font-size: 13px;
+            z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        }
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-logo"><a href="index.html">EROVIBE</a></div>
+    <nav>
+        <ul class="header-nav">
+            <li><a href="games.html">Games</a></li>
+            <li><a href="news_list.html">News</a></li>
+            <li><a href="events.html">Limited-time Events</a></li>
+            <li><a href="forum_list.html">Forum</a></li>
+            <li><a href="collab_store.html" class="active">Collab Store</a></li>
+        </ul>
+    </nav>
+    <div class="header-right">
+        <div class="header-icon" title="Language">🌐</div>
+        <div class="hamburger" onclick="document.getElementById('mobileNav').style.display=document.getElementById('mobileNav').style.display==='flex'?'none':'flex'">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Nav -->
+<div id="mobileNav" style="display:none;position:fixed;top:50px;left:0;right:0;z-index:999;background:#1a1a2e;border-bottom:1px solid #2a2a3e;flex-direction:column;padding:12px 20px;gap:12px;">
+    <a href="games.html" style="color:#888;font-size:14px;font-weight:600;">Games</a>
+    <a href="news_list.html" style="color:#888;font-size:14px;font-weight:600;">News</a>
+    <a href="events.html" style="color:#888;font-size:14px;font-weight:600;">Events</a>
+    <a href="forum_list.html" style="color:#888;font-size:14px;font-weight:600;">Forum</a>
+    <a href="collab_store.html" style="color:#e91e63;font-size:14px;font-weight:600;">Collab Store</a>
+</div>
+
+<div class="page-content">
+    <div class="store-hero">
+        <span class="store-badge">COMING SOON</span>
+        <h1>Collab Store</h1>
+        <p>Exclusive merchandise, limited-edition collectibles, and special collaborations from your favorite games — all in one place.</p>
+    </div>
+
+    <div class="store-grid">
+        <div class="store-item">
+            <div class="store-item-img">👕</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+        <div class="store-item">
+            <div class="store-item-img">🎨</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+        <div class="store-item">
+            <div class="store-item-img">🧸</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+        <div class="store-item">
+            <div class="store-item-img">🎮</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+        <div class="store-item">
+            <div class="store-item-img">📦</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+        <div class="store-item">
+            <div class="store-item-img">🖼️</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+        <div class="store-item">
+            <div class="store-item-img">✨</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+        <div class="store-item">
+            <div class="store-item-img">🃏</div>
+            <div class="store-item-info"><div class="store-item-name"></div><div class="store-item-price"></div></div>
+        </div>
+    </div>
+
+    <div class="notify-section">
+        <h3>🔔 Get Notified</h3>
+        <p>Be the first to know when the Collab Store launches. Drop your email below!</p>
+        <div class="notify-form" id="notifyForm">
+            <input class="notify-input" type="email" placeholder="your@email.com" id="notifyEmail">
+            <button class="notify-btn" onclick="submitNotify()">Notify Me</button>
+        </div>
+        <div class="notify-success" id="notifySuccess">✅ You're on the list! We'll notify you at launch.</div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-top">
+        <div class="footer-logo">EROVIBE</div>
+        <div class="footer-links">
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="mailto:support@erovibe.com">Support</a>
+            <a href="mailto:support@erovibe.com">Contact Us</a>
+        </div>
+        <select class="footer-lang" onchange="handleLangChange(this.value)">
+            <option>English</option>
+            <option>日本語</option>
+        </select>
+    </div>
+    <p class="footer-disclaimer">
+        © 2026 EROVIBE. All rights reserved.<br>
+        This website contains age-restricted content. You must be 18+ to access.
+    </p>
+</footer>
+
+<div class="toast" id="langToast">🌐 Language support coming soon!</div>
+
+<script>
+function submitNotify() {
+    const email = document.getElementById('notifyEmail').value.trim();
+    if (!email || !email.includes('@')) {
+        document.getElementById('notifyEmail').style.borderColor = '#f44336';
+        return;
+    }
+    document.getElementById('notifyForm').style.display = 'none';
+    document.getElementById('notifySuccess').style.display = 'block';
+}
+
+function handleLangChange(val) {
+    localStorage.setItem('erovibe_lang', val);
+    const toast = document.getElementById('langToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
+
+</body>
+</html>

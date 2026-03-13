@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>EROVIBE | News</title>
+    <meta name="description" content="Stay up to date with the latest EROVIBE news — game updates, patch notes, events and community highlights!">
+    <meta property="og:title" content="EROVIBE | News">
+    <meta property="og:description" content="Stay up to date with the latest EROVIBE news — game updates, patch notes, events and community highlights!">
+    <meta property="og:image" content="img/1771902607202.jpg">
+    <meta property="og:url" content="https://erovibe.com/news_list.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="EROVIBE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EROVIBE | News">
+    <meta name="twitter:description" content="Stay up to date with the latest EROVIBE news — game updates, patch notes, events and community highlights!">
+    <link rel="canonical" href="https://erovibe.com/news_list.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -360,6 +371,7 @@
     <a href="news_list.html" style="color:#e91e63;font-size:14px;font-weight:600;">News</a>
     <a href="events.html" style="color:#888;font-size:14px;font-weight:600;">Events</a>
     <a href="forum_list.html" style="color:#888;font-size:14px;font-weight:600;">Forum</a>
+    <a href="collab_store.html" style="color:#888;font-size:14px;font-weight:600;">Collab Store</a>
 </div>
 
 <!-- ── BREADCRUMBS ── -->
@@ -403,12 +415,12 @@
     <div class="footer-top">
         <a href="index.html" class="footer-logo">EROVIBE</a>
         <div class="footer-links">
-            <a href="#">Terms of Service</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Support</a>
-            <a href="#">Contact Us</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="mailto:support@erovibe.com">Support</a>
+            <a href="mailto:support@erovibe.com">Contact Us</a>
         </div>
-        <select class="footer-lang" onchange="alert('Coming soon!')">
+        <select class="footer-lang" onchange="handleLangChange(this.value)">
             <option>English</option>
             <option>日本語</option>
             <option>中文</option>
@@ -675,6 +687,10 @@ renderSidebar();
 renderCategoryTabs();
 renderNewsList();
 renderPagination();
+</script>
+<div id="langToast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:8px;border:1px solid #2a2a3e;font-size:13px;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;">🌐 Language support coming soon!</div>
+<script>
+function handleLangChange(val){localStorage.setItem('erovibe_lang',val);var t=document.getElementById('langToast');t.style.opacity='1';setTimeout(function(){t.style.opacity='0'},2500);}
 </script>
 </body>
 </html>

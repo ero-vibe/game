@@ -6,6 +6,16 @@
     <title>EROVIBE | Best Free Online Adult Games</title>
     <meta name="description" content="Erotic, uncensored games! Totally FREE! Available on all devices! The hottest Adult Games all in one place at EROVIBE!">
     <meta name="keywords" content="adult games, erotic games, free games, online games">
+    <meta property="og:title" content="EROVIBE | Best Free Online Adult Games">
+    <meta property="og:description" content="Erotic, uncensored games! Totally FREE! Available on all devices! The hottest Adult Games all in one place at EROVIBE!">
+    <meta property="og:image" content="img/1771902607202.jpg">
+    <meta property="og:url" content="https://erovibe.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="EROVIBE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EROVIBE | Best Free Online Adult Games">
+    <meta name="twitter:description" content="Erotic, uncensored games! Totally FREE! Available on all devices! The hottest Adult Games all in one place at EROVIBE!">
+    <link rel="canonical" href="https://erovibe.com/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -617,7 +627,7 @@
             <li><a href="news_list.html">News</a></li>
             <li><a href="events.html">Limited-time Events</a></li>
             <li><a href="forum_list.html">Forum</a></li>
-            <li><a href="#" onclick="alert('Coming soon!');return false;">Collab Store</a></li>
+            <li><a href="collab_store.html">Collab Store</a></li>
         </ul>
     </nav>
     <div class="header-right">
@@ -647,7 +657,7 @@
         <a class="mobile-menu-item" href="news_list.html">📰 News</a>
         <a class="mobile-menu-item" href="events.html">⚡ Limited-time Events</a>
         <a class="mobile-menu-item" href="forum_list.html">💬 Forum</a>
-        <a class="mobile-menu-item" href="#" onclick="alert('Coming soon!');return false;">🛒 Collab Store</a>
+        <a class="mobile-menu-item" href="collab_store.html">🛒 Collab Store</a>
         <div class="mobile-menu-divider"></div>
         <div class="mobile-menu-section-title">Content Preference</div>
         <div class="mobile-menu-gender" id="mobileGenderButtons">
@@ -782,14 +792,14 @@
     <div class="footer-top">
         <div class="footer-logo">EROVIBE</div>
         <div class="footer-links">
-            <a href="#">Terms of Service</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Support</a>
-            <a href="#">Contact Us</a>
-            <a href="#">Advertise</a>
-            <a href="#">Forum</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="mailto:support@erovibe.com">Support</a>
+            <a href="mailto:support@erovibe.com">Contact Us</a>
+            <a href="mailto:advertise@erovibe.com">Advertise</a>
+            <a href="forum_list.html">Forum</a>
         </div>
-        <select class="footer-lang" onchange="alert('Coming soon!')">
+        <select class="footer-lang" onchange="handleLangChange(this.value)">
             <option>English</option>
             <option>日本語</option>
             <option>中文</option>
@@ -1041,8 +1051,8 @@ function renderSignupBar() {
         `<div class="signup-bar-icon"><img src="${g.img}" alt="${g.name}"></div>`
     ).join('') +
     '<div class="signup-bar-text">Sign up for free to play exclusive games!</div>' +
-    '<button class="signup-btn" onclick="alert(\'Coming soon!\')">Sign Up</button>' +
-    '<button class="signup-btn" onclick="alert(\'Coming soon!\')">Claim Access</button>';
+    '<button class="signup-btn" onclick="window.location.href=\'ErovibeSetup.msi\'">Sign Up</button>' +
+    '<button class="signup-btn" onclick="window.location.href=\'ErovibeSetup.msi\'">Claim Access</button>';
 }
 
 // ── EVENTS ────────────────────────────────────────────────────
@@ -1288,6 +1298,10 @@ renderGameList('onlineGrid', 'onlinePagination', currentOnlineGames, 1);
 renderGameList('singleGrid', 'singlePagination', currentSingleGames, 1);
 renderSignupBar();
 renderSidebarForum();
+</script>
+<div id="langToast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:8px;border:1px solid #2a2a3e;font-size:13px;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;">🌐 Language support coming soon!</div>
+<script>
+function handleLangChange(val){localStorage.setItem('erovibe_lang',val);var t=document.getElementById('langToast');t.style.opacity='1';setTimeout(function(){t.style.opacity='0'},2500);}
 </script>
 </body>
 </html>
